@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  pgsql_database:
+    container_name: pgsql_database
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${PGSQL_ADMIN_PASS}
+      POSTGRES_USER: root
+    volumes:
+      - ${PGSQL_VOLUME}:/var/lib/postgresql/data
+    ports:
+      - ${PGSQL_PORT_MAPPING}
