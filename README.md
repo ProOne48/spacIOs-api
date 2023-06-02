@@ -1,5 +1,5 @@
 # spacIOs-api
-Repository for the api of the SpacIOs app that would be the TFG of Sergio Sánchez Ortega student of the University of Granada (UGR)
+Repository for the api of the SpacIOs app that would be the TFG of an student of the University of Granada (UGR)
 
 ## Description
 
