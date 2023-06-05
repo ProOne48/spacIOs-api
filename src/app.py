@@ -26,6 +26,9 @@ if settings.DEBUG_SQL > 0:
     app.wsgi_app = EasyProfileMiddleware(app.wsgi_app)
 
 
+# TODO: Add the blueprints to the app
+
+
 @app.errorhandler(500)
 def internal_error_handler(error: Exception):
 

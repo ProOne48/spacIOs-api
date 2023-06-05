@@ -2,9 +2,12 @@ from alembic import context
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 
+from base.db_manager import get_db_string
+from base.rest_item import BaseSQL
 
 # TODO: Add here your database models
 
+from src.models.space_owner import SpaceOwner  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -25,6 +28,8 @@ target_metadata = BaseSQL.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+config.set_main_option('sqlalchemy.url', get_db_string())
 
 
 def run_migrations_offline() -> None:
@@ -59,7 +64,7 @@ def run_migrations_online() -> None:
 
     """
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
