@@ -1,4 +1,5 @@
 from flask import abort
+from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 
 from base.settings import settings
@@ -17,6 +18,7 @@ blp = Blueprint(
 
 
 @blp.route('', methods=['GET'])
+@jwt_required()
 @blp.response(200, SpaceOwnerListSchema)
 def get_space_owners():
     """
