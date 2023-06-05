@@ -1,0 +1,11 @@
+[default]
+DEBUG_MODE = true
+DEBUG_SQL = false
+API_BASE_NAME = '/api'
+ENABLE_CORS = true
+
+
+[test]
+API_BASE_NAME = '/api'
+ENABLE_CORS = false
+SECRET_KEY = "T0P_S3CR3T"
