@@ -4,7 +4,7 @@ from marshmallow import Schema, fields
 class SpaceOwnerSchema(Schema):
     name = fields.String(required=True, metadata={"description": "Space owner name"})
     email = fields.Email(required=True, metadata={"description": "Space owner email"})
-    spaces = fields.Nested(SpaceListSchema, metadata={"description": "List of spaces owned by the user"})
+    # spaces = fields.Nested(SpaceListSchema, metadata={"description": "List of spaces owned by the user"})
 
 
 class SpaceOwnerListSchema(Schema):
