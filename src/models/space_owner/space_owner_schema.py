@@ -1,10 +1,11 @@
 from marshmallow import Schema, fields
 
+from src.models.space import SpaceSchema
 
 class SpaceOwnerSchema(Schema):
     name = fields.String(required=True, metadata={"description": "Space owner name"})
     email = fields.Email(required=True, metadata={"description": "Space owner email"})
-    # spaces = fields.Nested(SpaceListSchema, metadata={"description": "List of spaces owned by the user"})
+    spaces = fields.Nested(SpaceSchema, many=True, metadata={"description": "List of spaces owned by the user"})
 
 
 class SpaceOwnerListSchema(Schema):
@@ -12,7 +13,7 @@ class SpaceOwnerListSchema(Schema):
     total = fields.Integer(dump_only=True, metadata={"description": "Total number of space owners"})
 
 
-class SpaceOwnerCreateSchema(Schema):
+class CreateSpaceOwnerSchema(Schema):
     name = fields.String(required=True, metadata={"description": "Space owner name"})
     email = fields.Email(required=True, metadata={"description": "Space owner email"})
 

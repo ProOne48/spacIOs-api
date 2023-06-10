@@ -127,7 +127,3 @@ class RestItem(BaseSQL):
         except SQLAlchemyError as e:
             self.session.rollback()
             raise e
-              
-                
-
-    

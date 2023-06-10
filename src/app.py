@@ -26,10 +26,12 @@ if settings.DEBUG_SQL > 0:
     app.wsgi_app = EasyProfileMiddleware(app.wsgi_app)
 
 from src.services import space_owner_service
+from src.services import space_service
 
 # TODO: Add the blueprints to the app
 
 api.register_blueprint(space_owner_service.blp)
+api.register_blueprint(space_service.blp)
 
 
 @app.errorhandler(500)

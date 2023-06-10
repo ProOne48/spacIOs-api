@@ -11,11 +11,15 @@ from base.settings import settings
 
 
 class SpaceOwner(RestItem):
+    """
+    SpaceOwner model class
+    """
     __tablename__ = 'space_owner'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(80))
     email: Mapped[str] = mapped_column(String(120), unique=True)
+    spaces: Mapped[List['Space']] = relationship()
 
     @classmethod
     def verify_google_token(cls, token: str) -> bool:
