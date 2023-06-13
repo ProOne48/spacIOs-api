@@ -51,3 +51,40 @@ def create_space(space_data):
         abort(400, message=e.message)
 
     return space
+
+
+@blp.route('/<int:space_id>', methods=['PUT'])
+@blp.arguments(SpaceSchema)
+@blp.response(200, SpaceSchema)
+def update_space(space_data, space_id: int):
+    """
+    Update a space
+    :param space_data: SpaceSchema
+    :param space_id: Space id
+    :return: SpaceSchema
+    """
+    space = Space.find(space_id)
+    space.add_from_dict(space_data)
+    try:
+        space.update()
+    except Exception as e:
+        abort(400, message=e.message)
+
+    return space
+
+
+@blp.route('/<int:space_id>', methods=['DELETE'])
+@blp.response(204)
+def delete_space(space_id: int):
+    """
+    Delete a space
+    :param space_id: Space id
+    :return: None
+    """
+    space = Space.find(space_id)
+    try:
+        space.delete()
+    except Exception as e:
+        abort(400, message=e.message)
+
+    return None

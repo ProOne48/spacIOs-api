@@ -32,7 +32,7 @@ def get_space_owners():
 @blp.response(200, SpaceOwnerSchema)
 def get_space_owner_by_id(space_owner_id: int):
     """
-
+    Get a space owner by id
     """
     return SpaceOwner.find(space_owner_id)
 
@@ -54,3 +54,44 @@ def create_space_owner(space_owner_data):
         abort(400, message=e.message)
 
     return space_owner
+
+
+@blp.route('/<int:space_owner_id>', methods=['PUT'])
+@blp.arguments(SpaceOwnerSchema)
+@blp.response(200, SpaceOwnerSchema)
+def update_space_owner(space_owner_data, space_owner_id: int):
+    """
+    Update a space owner
+    :param space_owner_data: SpaceOwnerSchema
+    :param space_owner_id: Space owner id
+    :return: SpaceOwnerSchema
+    """
+    space_owner = SpaceOwner.find(space_owner_id)
+    if space_owner is None:
+        abort(404, message='Space owner not found')
+    space_owner.add_from_dict(space_owner_data)
+    try:
+        space_owner.update()
+    except Exception as e:
+        abort(400, message=e.message)
+
+    return space_owner
+
+
+@blp.route('/<int:space_owner_id>', methods=['DELETE'])
+@blp.response(204)
+def delete_space_owner(space_owner_id: int):
+    """
+    Delete a space owner
+    :param space_owner_id: Space owner id
+    :return: None
+    """
+    space_owner = SpaceOwner.find(space_owner_id)
+    if space_owner is None:
+        abort(404, message='Space owner not found')
+    try:
+        space_owner.delete()
+    except Exception as e:
+        abort(400, message=e.message)
+
+    return None

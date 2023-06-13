@@ -6,7 +6,7 @@ from google.oauth2 import id_token
 from sqlalchemy import String
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from base.rest_item import RestItem
+from base.rest_item import RestItem, RestItemSubClass
 from base.settings import settings
 
 
@@ -19,7 +19,7 @@ class SpaceOwner(RestItem):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(80))
     email: Mapped[str] = mapped_column(String(120), unique=True)
-    spaces: Mapped[List['Space']] = relationship()
+    spaces: Mapped[Optional[List['Space']]] = relationship()
 
     @classmethod
     def verify_google_token(cls, token: str) -> bool:
@@ -37,3 +37,15 @@ class SpaceOwner(RestItem):
         except GoogleAuthError:
             # Invalid token
             return False
+
+    def delete(self: RestItemSubClass):
+        """
+        Delete the space owner and all its spaces
+        :return:
+        """
+        for space in self.spaces:
+            space.delete()
+        super().delete()
+
+
+
