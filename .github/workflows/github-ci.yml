@@ -16,8 +16,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Lint
-      run: pip install ruff black==23.1.0
-        black --check . && ruff check .
+      run: |
+        pip install ruff black==23.1.0
+        black --check .
+        ruff check .
 
   build:
     needs: lint
