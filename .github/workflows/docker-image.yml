@@ -15,5 +15,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Build the Docker image
-      run: docker-build --no-cache --pull -f docker/api.dockerfile -t $DOCKER_NAME
+      run: docker build --no-cache --pull -f docker/api.dockerfile -t $DOCKER_NAME
+
+    - name: Push the Docker image to the repository
+      run: docker push $DOCKER_NAME
