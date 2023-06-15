@@ -10,7 +10,17 @@ env:
 
 jobs:
 
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Lint
+      run: pip install ruff black==23.1.0
+        black --check . && ruff check .
+
   build:
+    name: Build and push Docker image
 
     runs-on: ubuntu-latest
 
@@ -35,5 +45,11 @@ jobs:
         context: .
         file: ./docker/api.dockerfile
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
+        tags: ${{ github.workflow_sha }}
         labels: ${{ steps.meta.outputs.labels }}
+
+  test:
+    name: Test
+
+    runs-on: ubuntu-latest
+    container: ${{ env.DOCKER_IMAGE }}:${{ github.workflow_sha }}
