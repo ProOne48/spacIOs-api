@@ -5,7 +5,8 @@ on:
   pull_request:
     branches: [ "main" ]
 env:
-  DOCKER_NAME: psgsql_docker
+  DOCKER_NAME: spaciosgithubci
+  DOCKER_REPOSITORY: hr-portal-api
 
 jobs:
 
@@ -16,8 +17,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Login to DockerHub
+      run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+
     - name: Build the Docker image
-      run: docker build --no-cache --pull -f docker/api.dockerfile -t $DOCKER_NAME .
+      run: docker build --no-cache --pull -f docker/api.dockerfile -t $DOCKER_NAME:$DOCKER_REPOSITORY .
 
     - name: Push the Docker image to the repository
-      run: docker push $DOCKER_NAME
+      run: docker push $DOCKER_NAME:$DOCKER_REPOSITORY
