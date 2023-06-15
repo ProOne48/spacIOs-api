@@ -2,6 +2,7 @@ from marshmallow import Schema, fields
 
 from src.models.space import SpaceSchema
 
+
 class SpaceOwnerSchema(Schema):
     name = fields.String(required=True, metadata={"description": "Space owner name"})
     email = fields.Email(required=True, metadata={"description": "Space owner email"})

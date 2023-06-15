@@ -19,7 +19,7 @@ class SpaceOwner(RestItem):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(80))
     email: Mapped[str] = mapped_column(String(120), unique=True)
-    spaces: Mapped[Optional[List['Space']]] = relationship()
+    spaces: Mapped[Optional[List['Space']]] = relationship()  # noqa: F821
 
     @classmethod
     def verify_google_token(cls, token: str) -> bool:
@@ -46,6 +46,3 @@ class SpaceOwner(RestItem):
         for space in self.spaces:
             space.delete()
         super().delete()
-
-
-

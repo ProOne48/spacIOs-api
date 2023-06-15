@@ -2,6 +2,7 @@ import pytest
 
 from src.models.space_owner import SpaceOwner
 
+
 class TestSpaceOwner(object):
     def test_insert(self, space_owner_data_with_spaces, another_space_demo):
         space_owner = SpaceOwner()

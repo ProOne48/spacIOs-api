@@ -21,7 +21,6 @@ def set_database():
     root_engine.connect().execute(DDL(f'DROP DATABASE IF EXISTS {settings.DB_NAME};'))
     root_engine.connect().execute(DDL(f'CREATE DATABASE {settings.DB_NAME};'))
 
-
     return root_engine
 
 

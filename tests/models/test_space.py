@@ -21,4 +21,3 @@ class TestSpace(object):
         assert (
             Space.list(criteria=[Space.id == insert_space.id])[1] == 0
         )
-

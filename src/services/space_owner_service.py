@@ -1,5 +1,4 @@
 from flask import abort
-from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 
 from base.settings import settings

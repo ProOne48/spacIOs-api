@@ -5,6 +5,7 @@ from sqlalchemy.orm import mapped_column, Mapped
 
 from base.rest_item import RestItem
 
+
 class Space(RestItem):
     """
     Space model class
