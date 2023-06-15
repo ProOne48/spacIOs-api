@@ -23,7 +23,7 @@ virtualenv --python=/usr/bin/python3.10 --system-site-packages venv
 
 # install dependencies
 pip install -r requirements.txt --force-reinstall
-pre-commit install
+pip install flake8 --force-reinstall
 
 # deactivate virtual env
 deactivate
