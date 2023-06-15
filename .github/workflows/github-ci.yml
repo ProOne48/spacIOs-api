@@ -18,8 +18,8 @@ jobs:
     - name: Lint
       run: |
         pip install ruff black==23.1.0
-        black --check .
         ruff check .
+        black --check .
 
   build:
     needs: lint
