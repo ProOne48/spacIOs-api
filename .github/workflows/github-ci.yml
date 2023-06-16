@@ -47,7 +47,7 @@ jobs:
         context: .
         file: ./docker/api.dockerfile
         push: true
-        tags: ${{ github.workflow }}-${{ github.workflow_sha }}
+        tags: login-with-google
         labels: ${{ steps.meta.outputs.labels }}
 
   test:
