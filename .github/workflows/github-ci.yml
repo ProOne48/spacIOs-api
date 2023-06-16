@@ -67,13 +67,7 @@ jobs:
           POSTGRES_USER: root
         ports:
           - 5432:5432
-    env:
 
-      ENV_FOR_DYNACONF: test
-      DYNACONF_DB_PASS: 'Very!SecretPassw0rd'
-      DYNACONF_DB_HOST: 0.0.0.0
-      DYNACONF_DB_PORT: 5432
-      DYNACONF_DB_USER: 'root'
 
     steps:
     - uses: actions/checkout@v3
@@ -93,3 +87,10 @@ jobs:
         coverage run -m pytest tests
         coverage report -m
         coverage xml
+      env:
+
+        ENV_FOR_DYNACONF: test
+        DYNACONF_DB_PASS: 'Very!SecretPassw0rd'
+        DYNACONF_DB_HOST: postgres
+        DYNACONF_DB_PORT: 5432
+        DYNACONF_DB_USER: 'root'
