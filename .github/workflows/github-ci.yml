@@ -56,19 +56,25 @@ jobs:
 
 
     runs-on: ubuntu-latest
-    container:
-      image: spaciosgithubci/spaciosapi:${{ github.workflow }}-${{ github.workflow_sha }}
-      env:
+    container: spaciosgithubci/spaciosapi:${{ github.workflow }}-${{ github.workflow_sha }}
 
-        ENV_FOR_DYNACONF: test
-        POSTGRES_PASSWORD: 'Very!SecretPassw0rd'
-        POSTGRES_USER: 'root'
-        DYNACONF_DB_PASS: 'Very!SecretPassw0rd'
-        DYNACONF_DB_HOST: 'dbserver'
-        DYNACONF_DB_PORT: '5432'
-        DYNACONF_DB_USER: 'root'
-      ports:
-        - 5050:5432
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: 'Very!SecretPassw0rd'
+          POSTGRES_USER: root
+        ports:
+          - 5050:5432
+    env:
+
+      ENV_FOR_DYNACONF: test
+      DYNACONF_DB_PASS: 'Very!SecretPassw0rd'
+      DYNACONF_DB_HOST: 'dbserver'
+      DYNACONF_DB_PORT: '5050'
+      DYNACONF_DB_USER: 'root'
+
     steps:
     - uses: actions/checkout@v3
 
