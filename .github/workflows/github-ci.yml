@@ -41,6 +41,10 @@ jobs:
       with:
         images: $DOCKER_IMAGE
 
+    - name: Debug
+      run: |
+        echo ${{ github.workflow_sha }}
+
     - name: Build and push the Docker image
       uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
       with:
