@@ -59,7 +59,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.DOCKER_IMAGE }}:${{ github.workflow }}-${{ github.workflow_sha }}
+      image: $DOCKER_IMAGE:${{ github.workflow }}-${{ github.workflow_sha }}
       env:
 
         ENV_FOR_DYNACONF: test
