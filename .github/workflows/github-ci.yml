@@ -53,11 +53,15 @@ jobs:
   test:
     needs: build
     name: Test
+    env:
+      DOCKER_IMAGE: spaciosgithubci/spaciosapi
+
 
     runs-on: ubuntu-latest
     container:
       image: ${{ env.DOCKER_IMAGE }}:${{ github.workflow }}-${{ github.workflow_sha }}
       env:
+
         ENV_FOR_DYNACONF: test
         POSTGRES_PASSWORD: 'Very!SecretPassw0rd'
         POSTGRES_USER: 'root'
