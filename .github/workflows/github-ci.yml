@@ -53,13 +53,11 @@ jobs:
   test:
     needs: build
     name: Test
-    env:
-      DOCKER_IMAGE: spaciosgithubci/spaciosapi
 
 
     runs-on: ubuntu-latest
     container:
-      image: $DOCKER_IMAGE:${{ github.workflow }}-${{ github.workflow_sha }}
+      image: spaciosgithubci/spaciosapi:${{ github.workflow }}-${{ github.workflow_sha }}
       env:
 
         ENV_FOR_DYNACONF: test
