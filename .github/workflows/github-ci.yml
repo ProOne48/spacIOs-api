@@ -56,7 +56,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: $DOCKER_IMAGE:${{ github.workflow_sha }}
+      image: ${{ env.DOCKER_IMAGE }}:${{ github.workflow }}-${{ github.workflow_sha }}
       env:
         ENV_FOR_DYNACONF: test
         POSTGRES_PASSWORD: 'Very!SecretPassw0rd'
