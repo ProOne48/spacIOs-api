@@ -63,8 +63,8 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_PASSWORD: 'Very!SecretPassw0rd'
-          POSTGRES_USER: 'root'
+          POSTGRES_PASSWORD: Very!SecretPassw0rd
+          POSTGRES_USER: root
         ports:
           - 5432:5432
 
@@ -90,7 +90,7 @@ jobs:
       env:
 
         ENV_FOR_DYNACONF: test
-        DYNACONF_DB_PASS: 'Very!SecretPassw0rd'
+        DYNACONF_DB_PASS: Very!SecretPassw0rd
         DYNACONF_DB_HOST: postgres
         DYNACONF_DB_PORT: 5432
-        DYNACONF_DB_USER: 'root'
+        DYNACONF_DB_USER: root
