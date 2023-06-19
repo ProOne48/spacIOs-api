@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, g
 from flask_jwt_extended import JWTManager
 from flask_smorest import Api, abort
 
@@ -39,3 +39,16 @@ def internal_error_handler(error: Exception):
 
     Session.rollback()
     abort(500, message="The server has an unexpected error.")
+
+
+@app.teardown_request
+def remove_session(exception: Exception = None):
+    Session.remove()
+
+
+@jwt.user_lookup_loader
+def load_current_user(jwt_header: dict, jwt_payload: dict) -> 'UserAuthSchema':
+
+    g.current_user = jwt_payload.get('sub')
+
+    return jwt_payload.get('sub')

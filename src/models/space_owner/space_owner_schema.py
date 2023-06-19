@@ -23,3 +23,10 @@ class SpaceOwnerGoogleLoginSchema(Schema):
     token = fields.String(required=True, metadata={"description": "Token for Google"})
     email = fields.Email(required=True, metadata={"description": "Email address of the user"})
     name = fields.String(required=True, metadata={"description": "Name of the user"})
+
+
+class UserAuthSchema(Schema):
+    id = fields.Integer(required=True, metadata={"description": "User id"})
+    name = fields.String(required=True, metadata={"description": "User name"})
+    email = fields.Email(required=True, metadata={"description": "User email"})
+
