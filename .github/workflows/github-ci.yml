@@ -56,7 +56,7 @@ jobs:
 
 
     runs-on: ubuntu-latest
-    container: spaciosgithubci/spaciosapi:${{ github.workflow }}-${{ github.workflow_sha }}
+    container: spaciosgithubci/spaciosapi:${{ github.workflow_sha }}
 
 
     services:
