@@ -1,4 +1,4 @@
-name: build
+name: SpacIOs API CI
 
 on:
   push:
