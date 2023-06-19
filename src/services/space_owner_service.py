@@ -1,7 +1,9 @@
 from flask import abort
+from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 
 from base.settings import settings
+from src.app import context
 from src.models.space_owner import SpaceOwner, SpaceOwnerListSchema, SpaceOwnerSchema, CreateSpaceOwnerSchema
 
 api_url = settings.API_BASE_NAME + '/space_owner'
@@ -34,6 +36,23 @@ def get_space_owner_by_id(space_owner_id: int):
     Get a space owner by id
     """
     return SpaceOwner.find(space_owner_id)
+
+
+@blp.route('/actual-user', methods=['GET'])
+@jwt_required
+@blp.response(200, SpaceOwnerSchema)
+def get_actual_user():
+    """
+    Get actual user
+    :return: SpaceOwnerSchema
+    """
+    space_owner = SpaceOwner()
+    try:
+        space_owner = SpaceOwner.find(context.get_user_id())
+    except Exception as e:
+        abort(404, message=e.message)
+
+    return space_owner
 
 
 @blp.route('', methods=['POST'])

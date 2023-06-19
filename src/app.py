@@ -2,11 +2,14 @@ from flask import Flask, g
 from flask_jwt_extended import JWTManager
 from flask_smorest import Api, abort
 
+from base.context import Context
 from base.db_manager import Session
 from base.settings import settings
 from src.models.space_owner import UserAuthSchema
 
 app = Flask(settings.APP_NAME)
+
+context = Context()
 
 app.secret_key = settings.SECRET_KEY
 
