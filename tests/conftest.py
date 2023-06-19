@@ -78,9 +78,14 @@ def reset_db():
 
 
 @pytest.fixture()
-def cookie_jwt_auth_header(insert_user):
+def app():
+    return flask_app
+
+
+@pytest.fixture()
+def cookie_jwt_auth_header(insert_space_owner):
     flask_app.config['JWT_COOKIE_CSRF_PROTECT'] = False
-    token = create_access_token(identity=insert_user.to_auth_identity())
+    token = create_access_token(identity=insert_space_owner.to_auth_data())
     return flask_app.config.get('JWT_ACCESS_COOKIE_NAME'), token
 
 

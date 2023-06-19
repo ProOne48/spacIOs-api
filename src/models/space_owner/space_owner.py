@@ -46,3 +46,14 @@ class SpaceOwner(RestItem):
         for space in self.spaces:
             space.delete()
         super().delete()
+
+    def to_auth_data(self) -> dict:
+        """
+        Return the data to be used for authentication
+        :return: dict with the data
+        """
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+        }

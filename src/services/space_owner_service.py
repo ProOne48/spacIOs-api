@@ -58,7 +58,7 @@ def create_space_owner(space_owner_data):
 @blp.route('/<int:space_owner_id>', methods=['PUT'])
 @blp.arguments(SpaceOwnerSchema)
 @blp.response(200, SpaceOwnerSchema)
-def update_space_owner(space_owner_data, space_owner_id: int):
+def update_space_owner(space_owner_data: dict, space_owner_id: int):
     """
     Update a space owner
     :param space_owner_data: SpaceOwnerSchema
@@ -92,5 +92,3 @@ def delete_space_owner(space_owner_id: int):
         space_owner.delete()
     except Exception as e:
         abort(400, message=e.message)
-
-    return None
