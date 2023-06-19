@@ -2,6 +2,9 @@ from typing import Optional
 
 import flask
 
+from src.models.space_owner import UserAuthSchema
+
+
 class Context:
 
     def get_user(self) -> 'UserAuthSchema':
@@ -11,4 +14,3 @@ class Context:
 
     def get_user_id(self) -> Optional[int]:
         return self.get_user().get('id')
-

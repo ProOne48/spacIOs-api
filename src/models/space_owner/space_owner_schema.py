@@ -29,4 +29,3 @@ class UserAuthSchema(Schema):
     id = fields.Integer(required=True, metadata={"description": "User id"})
     name = fields.String(required=True, metadata={"description": "User name"})
     email = fields.Email(required=True, metadata={"description": "User email"})
-

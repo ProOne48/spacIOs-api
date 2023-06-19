@@ -4,6 +4,7 @@ from flask_smorest import Api, abort
 
 from base.db_manager import Session
 from base.settings import settings
+from src.models.space_owner import UserAuthSchema
 
 app = Flask(settings.APP_NAME)
 
