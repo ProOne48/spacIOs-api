@@ -38,7 +38,7 @@ def get_space_owner_by_id(space_owner_id: int):
     return SpaceOwner.find(space_owner_id)
 
 
-@blp.route('/actual-user', methods=['GET'])
+@blp.route('/actual-space-owner', methods=['GET'])
 @jwt_required
 @blp.response(200, SpaceOwnerSchema)
 def get_actual_user():
