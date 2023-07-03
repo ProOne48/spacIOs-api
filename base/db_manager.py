@@ -8,6 +8,7 @@ from base.settings import settings
 if TYPE_CHECKING:  # pragma: no cover
     from sqlalchemy.engine import Engine
 
+
 def get_db_string(db_name: str = None) -> str:
     """
     Returns the database connection string

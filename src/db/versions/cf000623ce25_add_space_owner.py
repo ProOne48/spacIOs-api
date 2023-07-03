@@ -1,7 +1,7 @@
 """Add Space Owner
 
 Revision ID: cf000623ce25
-Revises: 
+Revises: Sergio
 Create Date: 2023-06-05 12:44:21.103535
 
 """

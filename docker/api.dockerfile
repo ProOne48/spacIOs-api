@@ -3,7 +3,7 @@ LABEL authors="ProOne48"
 
 RUN apt-get update && \
     apt-get -y upgrade && \
-    apt-get -y install git wget gnupg1 nano build-essential libssl-dev libffi-dev python-dev && \
+    apt-get -y install git && \
     mkdir -p /app
 
 WORKDIR /app

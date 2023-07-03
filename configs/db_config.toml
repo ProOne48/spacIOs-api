@@ -2,3 +2,8 @@
 
 DB_HOST = "localhost"
 DB_NAME = "root"
+
+[test]
+
+DB_HOST = "localhost"
+DB_NAME = "test_database"
