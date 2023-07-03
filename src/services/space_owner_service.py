@@ -34,6 +34,8 @@ def get_space_owners():
 def get_space_owner_by_id(space_owner_id: int):
     """
     Get a space owner by id
+    :param space_owner_id: Space owner id
+    :return: SpaceOwnerSchema
     """
     return SpaceOwner.find(space_owner_id)
 
