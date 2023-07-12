@@ -4,7 +4,8 @@ from src.models.space_owner.space_owner_schema import (
     SpaceOwnerSchema,
     CreateSpaceOwnerSchema,
     SpaceOwnerGoogleLoginSchema,
-    UserAuthSchema
+    UserAuthSchema,
+    AuthResponseSchema
 )
 
 __all__ = [
@@ -13,5 +14,6 @@ __all__ = [
     "SpaceOwnerListSchema",
     "CreateSpaceOwnerSchema",
     "SpaceOwnerGoogleLoginSchema",
-    "UserAuthSchema"
+    "UserAuthSchema",
+    "AuthResponseSchema"
 ]

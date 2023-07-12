@@ -1,7 +1,9 @@
 from flask import abort
+from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 
 from base.settings import settings
+from src.app import context
 from src.models.space import Space, SpaceSchema, SpaceListSchema, SpaceCreateSchema
 
 blp = Blueprint(
@@ -23,6 +25,18 @@ def get_spaces():
     return {'items': items, 'total': total}
 
 
+@blp.route('/actual-spaces', methods=['GET'])
+@jwt_required()
+@blp.response(200, SpaceListSchema)
+def get_actual_spaces():
+    """
+    Get actual spaces
+    :return: A list of spaces
+    """
+    space_owner_id = context.get_user_id()
+    items, total = Space.list(criteria=[Space.space_owner_id == space_owner_id])
+    return {'items': items, 'total': total}
+
 @blp.route('/<int:space_id>', methods=['GET'])
 @blp.response(200, SpaceSchema)
 def get_space_by_id(space_id: int):
@@ -36,6 +50,7 @@ def get_space_by_id(space_id: int):
 
 @blp.route('', methods=['POST'])
 @blp.arguments(SpaceCreateSchema)
+@jwt_required()
 @blp.response(200, SpaceSchema)
 def create_space(space_data):
     """
@@ -55,6 +70,7 @@ def create_space(space_data):
 
 @blp.route('/<int:space_id>', methods=['PUT'])
 @blp.arguments(SpaceSchema)
+@jwt_required()
 @blp.response(200, SpaceSchema)
 def update_space(space_data, space_id: int):
     """
@@ -74,6 +90,7 @@ def update_space(space_data, space_id: int):
 
 
 @blp.route('/<int:space_id>', methods=['DELETE'])
+@jwt_required()
 @blp.response(204)
 def delete_space(space_id: int):
     """
