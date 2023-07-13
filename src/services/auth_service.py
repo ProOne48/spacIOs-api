@@ -18,7 +18,6 @@ blp = Blueprint(
 
 
 @blp.route('/google-login', methods=['POST'])
-@blp.doc(security=[{'JWT': []}])
 @blp.arguments(SpaceOwnerGoogleLoginSchema)
 @blp.response(200, AuthResponseSchema)
 def google_login(login_data):

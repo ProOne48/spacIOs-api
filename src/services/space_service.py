@@ -27,6 +27,7 @@ def get_spaces():
 
 @blp.route('/actual-spaces', methods=['GET'])
 @jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceListSchema)
 def get_actual_spaces():
     """
@@ -38,6 +39,8 @@ def get_actual_spaces():
     return {'items': items, 'total': total}
 
 @blp.route('/<int:space_id>', methods=['GET'])
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceSchema)
 def get_space_by_id(space_id: int):
     """
@@ -51,6 +54,7 @@ def get_space_by_id(space_id: int):
 @blp.route('', methods=['POST'])
 @blp.arguments(SpaceCreateSchema)
 @jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceSchema)
 def create_space(space_data):
     """
@@ -71,6 +75,7 @@ def create_space(space_data):
 @blp.route('/<int:space_id>', methods=['PUT'])
 @blp.arguments(SpaceSchema)
 @jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceSchema)
 def update_space(space_data, space_id: int):
     """
@@ -91,6 +96,7 @@ def update_space(space_data, space_id: int):
 
 @blp.route('/<int:space_id>', methods=['DELETE'])
 @jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.response(204)
 def delete_space(space_id: int):
     """
