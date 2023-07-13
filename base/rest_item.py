@@ -85,9 +85,8 @@ class RestItem(BaseSQL):
         """
         if data:
             self.add_from_dict(data)
-            
         self.commit()
-        
+
     def insert(self: RestItemSubClass):
         """
         Inserts the current object in the database
@@ -95,7 +94,7 @@ class RestItem(BaseSQL):
         """
         self.session.add(self)
         self.commit()
-        
+
     def delete(self: RestItemSubClass):
         """
         Deletes the current object from the database
@@ -113,7 +112,7 @@ class RestItem(BaseSQL):
         for field, value in data.items():
             if hasattr(self, field):
                 setattr(self, field, value)
-                
+
     def commit(self: RestItemSubClass):
         """
         Commits the current session
@@ -127,7 +126,3 @@ class RestItem(BaseSQL):
         except SQLAlchemyError as e:
             self.session.rollback()
             raise e
-              
-                
-
-    
