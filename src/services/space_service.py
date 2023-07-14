@@ -1,4 +1,4 @@
-from flask import abort
+from flask_smorest import abort
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 
@@ -38,6 +38,7 @@ def get_actual_spaces():
     items, total = Space.list(criteria=[Space.space_owner_id == space_owner_id])
     return {'items': items, 'total': total}
 
+
 @blp.route('/<int:space_id>', methods=['GET'])
 @jwt_required()
 @blp.doc(security=[{'JWT': []}])
@@ -64,10 +65,13 @@ def create_space(space_data):
     """
     space = Space()
     space.add_from_dict(space_data)
+    space.space_owner_id = context.get_user_id()
+    space.capacity = 0
+    space.max_capacity = 0
     try:
         space.insert()
     except Exception as e:
-        abort(400, message=e.message)
+        abort(400, message=e)
 
     return space
 

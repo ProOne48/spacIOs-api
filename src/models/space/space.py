@@ -14,6 +14,7 @@ class Space(RestItem):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column()
+    description: Mapped[Optional[str]] = mapped_column()
     max_capacity: Mapped[int] = mapped_column()
     space_owner_id: Mapped[int] = mapped_column(ForeignKey('space_owner.id'))
     tables: Mapped[Optional['Table']] = relationship() #noqa: F821
