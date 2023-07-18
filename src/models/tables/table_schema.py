@@ -15,6 +15,5 @@ class TableListSchema(Schema):
 
 
 class TableCreateSchema(Schema):
-    n_chairs = fields.Int()
-    reservable = fields.Bool()
-    space_id = fields.Int()
+    n_chairs = fields.Int(required=True)
+    reservable = fields.Bool(required=True)

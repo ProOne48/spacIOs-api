@@ -19,5 +19,6 @@ class SpaceListSchema(Schema):
 
 
 class SpaceCreateSchema(Schema):
+    id = fields.Integer()
     name = fields.String(required=True)
     description = fields.String()

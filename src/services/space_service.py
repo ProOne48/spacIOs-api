@@ -5,6 +5,7 @@ from flask_smorest import Blueprint
 from base.settings import settings
 from src.app import context
 from src.models.space import Space, SpaceSchema, SpaceListSchema, SpaceCreateSchema
+from src.models.tables import TableCreateSchema, Table
 
 blp = Blueprint(
     name='Space',
@@ -34,8 +35,8 @@ def get_actual_spaces():
     Get actual spaces
     :return: A list of spaces
     """
-    space_owner_id = context.get_user_id()
-    items, total = Space.list(criteria=[Space.space_owner_id == space_owner_id])
+    items, total = Space.list(criteria=[Space.space_owner_id == context.get_user_id()])
+
     return {'items': items, 'total': total}
 
 
@@ -76,12 +77,34 @@ def create_space(space_data):
     return space
 
 
-@blp.route('/<int:space_id>', methods=['PUT'])
-@blp.arguments(SpaceSchema)
+@blp.route('/<int:space_id>/tables', methods=['PUT'])
+@blp.arguments(TableCreateSchema)
 @jwt_required()
 @blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceSchema)
-def update_space(space_data, space_id: int):
+def add_table(table_data, space_id: int):
+    """
+    Add a table to a space
+    :param table_data: CreateTableSchema
+    :param space_id: Space id
+    :return: SpaceSchema
+    """
+    space = Space.find(space_id)
+    space.add_table(table_data)
+    try:
+        space.update()
+    except Exception as e:
+        abort(400, message=e.message)
+
+    return space
+
+
+@blp.route('/<int:space_id>', methods=['PUT'])
+@blp.arguments(SpaceCreateSchema)
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
+@blp.response(200, SpaceSchema)
+def edit_space(space_data, space_id: int):
     """
     Update a space
     :param space_data: SpaceSchema

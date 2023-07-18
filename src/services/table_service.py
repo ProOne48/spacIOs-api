@@ -36,28 +36,6 @@ def get_table_by_id(table_id: int):
     return Table.find(table_id)
 
 
-@blp.route('', methods=['POST'])
-@blp.arguments(TableCreateSchema)
-@jwt_required()
-@blp.doc(security=[{'JWT': []}])
-@blp.response(200, TableSchema)
-def create_table(table_data):
-    """
-    Create a table
-    :param table_data: TableCreateSchema
-    :return: TableSchema
-    """
-    table = Table()
-    table.add_from_dict(table_data)
-
-    try:
-        table.insert()
-    except Exception as e:
-        return abort(400, message=e.message)
-
-    return table
-
-
 @blp.route('/<int:table_id>', methods=['PUT'])
 @blp.arguments(TableSchema)
 @jwt_required()
