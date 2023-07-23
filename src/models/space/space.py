@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
@@ -18,7 +18,7 @@ class Space(RestItem):
     description: Mapped[Optional[str]] = mapped_column()
     max_capacity: Mapped[int] = mapped_column()
     space_owner_id: Mapped[int] = mapped_column(ForeignKey('space_owner.id'))
-    tables: Mapped[Optional['Table']] = relationship() #noqa: F821
+    tables: Mapped[Optional[List['Table']]] = relationship() #noqa: F821
     capacity: Mapped[Optional[int]] = mapped_column()
 
 

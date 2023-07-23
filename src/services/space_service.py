@@ -132,6 +132,8 @@ def delete_space(space_id: int):
     :return: None
     """
     space = Space.find(space_id)
+    if not space:
+        abort(404, message='Space not found')
     try:
         space.delete()
     except Exception as e:

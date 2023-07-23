@@ -11,6 +11,7 @@ class Table(RestItem):
     __tablename__ = 'table'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    table_number: Mapped[int] = mapped_column()
     n_chairs: Mapped[int] = mapped_column()
     reservable: Mapped[bool] = mapped_column(server_default=false())
     space_id: Mapped[int] = mapped_column(ForeignKey('space.id'))

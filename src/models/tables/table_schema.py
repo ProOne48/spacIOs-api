@@ -4,6 +4,7 @@ from marshmallow import Schema, fields
 class TableSchema(Schema):
     id = fields.Int(dump_only=True)
     n_chairs = fields.Int()
+    table_number = fields.Int()
     reservable = fields.Bool()
     space_id = fields.Int()
     qr_code = fields.Str()

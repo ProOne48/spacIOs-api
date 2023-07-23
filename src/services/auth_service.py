@@ -58,7 +58,6 @@ def google_login(login_data):
 
 @blp.route('/logout', methods=['DELETE'])
 @blp.doc(security=[{'JWT': []}])
-@jwt_required()
 @blp.response(200)
 def logout():
     """
