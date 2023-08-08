@@ -1,4 +1,5 @@
 from marshmallow import Schema, fields
+from flask_smorest.fields import Upload
 
 from src.models.tables import TableSchema
 
@@ -22,3 +23,7 @@ class SpaceCreateSchema(Schema):
     id = fields.Integer(allow_none=True)
     name = fields.String(required=True)
     description = fields.String()
+
+
+class SpacePDFSchema(Schema):
+    pdf = Upload(required=True)

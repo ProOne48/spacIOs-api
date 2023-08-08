@@ -1,6 +1,7 @@
-from flask import abort
+from flask import abort, send_file
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
+import qrcode
 
 from base.settings import settings
 from src.models.tables import Table, TableSchema, TableListSchema, TableCreateSchema
@@ -69,4 +70,5 @@ def delete_table(table_id: int):
     :param table_id: Table id
     :return: TableSchema
     """
-    return Table.delete(table_id)
+    table = Table.find(table_id)
+    return Table.delete(table)

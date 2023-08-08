@@ -16,4 +16,8 @@ class Table(RestItem):
     reservable: Mapped[bool] = mapped_column(server_default=false())
     space_id: Mapped[int] = mapped_column(ForeignKey('space.id'))
     qr_code: Mapped[Optional[str]] = mapped_column()
-    occupied: Mapped[bool] = mapped_column()
+    occupied: Mapped[bool] = mapped_column(server_default=false())
+
+
+
+

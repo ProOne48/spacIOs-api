@@ -24,7 +24,7 @@ def upgrade() -> None:
     sa.Column('reservable', sa.Boolean(), server_default=sa.text('false'), nullable=False),
     sa.Column('space_id', sa.Integer(), nullable=False),
     sa.Column('qr_code', sa.String(), nullable=True),
-    sa.Column('occupied', sa.Boolean(), nullable=False),
+    sa.Column('occupied', sa.Boolean(), server_default=sa.text('false'), nullable=False),
     sa.ForeignKeyConstraint(['space_id'], ['space.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

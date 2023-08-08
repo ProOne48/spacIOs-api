@@ -1,10 +1,13 @@
+import io
+
+from flask import request, send_file
 from flask_smorest import abort
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 
 from base.settings import settings
 from src.app import context
-from src.models.space import Space, SpaceSchema, SpaceListSchema, SpaceCreateSchema
+from src.models.space import Space, SpaceSchema, SpaceListSchema, SpaceCreateSchema, SpacePDFSchema
 from src.models.tables import TableCreateSchema, Table
 
 blp = Blueprint(
@@ -77,7 +80,7 @@ def create_space(space_data):
     return space
 
 
-@blp.route('/<int:space_id>/tables', methods=['PUT'])
+@blp.route('/<int:space_id>/table', methods=['PUT'])
 @blp.arguments(TableCreateSchema)
 @jwt_required()
 @blp.doc(security=[{'JWT': []}])
@@ -91,10 +94,8 @@ def add_table(table_data, space_id: int):
     """
     space = Space.find(space_id)
     space.add_table(table_data)
-    try:
-        space.update()
-    except Exception as e:
-        abort(400, message=e.message)
+
+    space.update()
 
     return space
 
@@ -136,6 +137,52 @@ def delete_space(space_id: int):
         abort(404, message='Space not found')
     try:
         space.delete()
+    except Exception as e:
+        abort(400, message=e.message)
+
+    return None
+
+
+@blp.route('/<int:space_id>/pdf', methods=['GET'])
+@blp.response(200)
+def get_pdf(space_id: int):
+    """
+    Get pdf image for a space
+    :param space_id: Space id
+    :return: SpacePDFSchema
+    """
+    space = Space.find(space_id)
+    if not space:
+        abort(404, message='Space not found')
+
+    if space.pdf_img:
+        pdf_bytes = io.BytesIO(space.pdf_img)
+
+    filename = space.name + '.pdf'
+
+    return send_file(pdf_bytes, download_name=filename, mimetype='application/pdf')
+
+
+@blp.route('/<int:space_id>/pdf', methods=['PUT'])
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
+@blp.arguments(SpacePDFSchema, location='files')
+@blp.response(200)
+def upload_pdf(file_data, space_id: int):
+    """
+    Upload a pdf image for a space
+    :param file_data: SpacePDFSchema
+    :param space_id: Space id
+    :return: None
+    """
+    space = Space.find(space_id)
+    if not space:
+        abort(404, message='Space not found')
+
+    space.pdf_img = request.files['pdf'].read()
+
+    try:
+        space.update()
     except Exception as e:
         abort(400, message=e.message)
 

@@ -1,10 +1,10 @@
 from typing import Optional, List
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, LargeBinary
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from base.rest_item import RestItem
-from src.models.tables import Table
+from src.models.tables import Table, TableInputType
 
 
 class Space(RestItem):
@@ -18,26 +18,39 @@ class Space(RestItem):
     description: Mapped[Optional[str]] = mapped_column()
     max_capacity: Mapped[int] = mapped_column()
     space_owner_id: Mapped[int] = mapped_column(ForeignKey('space_owner.id'))
-    tables: Mapped[Optional[List['Table']]] = relationship() #noqa: F821
     capacity: Mapped[Optional[int]] = mapped_column()
+    pdf_img: Mapped[Optional[bytes]] = mapped_column()
+    tables: Mapped[Optional[List['Table']]] = relationship() #noqa: F821
 
+    def check_table_number(self, table_number: int) -> bool:
+        """
+        Check if the table number already exists in the space
+        """
+        for t in self.tables:
+            if t.table_number == table_number:
+                return True
+        return False
 
-    def add_table(self, table: Table) -> None:
+    def add_table(self, table_data: TableInputType) -> None:
         """
         Add a table to the space
         """
+        if self.check_table_number(table_data.get('table_number')):
+            raise TableNumberExistError('Table number already exists', 'TABLE_NUMBER_EXISTS')
+
+        table = Table()
+        table.add_from_dict(table_data)
         table.space_id = self.id
+        table.insert()
         self.tables.append(table)
-        self.capacity += table.n_chairs
         self.max_capacity += table.n_chairs
 
     def delete_table(self, table: Table) -> None:
         """
         Remove a table from the space
         """
+        self.max_capacity -= table.n_chairs
         self.tables.remove(table)
-        self.capacity -= table.capacity
-        self.max_capacity -= table.capacity
 
     def edit_table(self, table_data: Table) -> None:
         """
@@ -48,3 +61,5 @@ class Space(RestItem):
                 table = table_data
                 table.update()
                 break
+
+
