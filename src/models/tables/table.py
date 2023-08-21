@@ -5,6 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from base.rest_item import RestItem
 from qrcode.image.pil import PilImage
+from src.classes.qr_generator import QRGenerator
 
 
 class Table(RestItem):
@@ -18,6 +19,5 @@ class Table(RestItem):
     qr_code: Mapped[Optional[str]] = mapped_column()
     occupied: Mapped[bool] = mapped_column(server_default=false())
 
-
-
-
+    def generate_qr_code(self) -> PilImage:
+        return QRGenerator.generate_qr_code(self.space_id, self.id)

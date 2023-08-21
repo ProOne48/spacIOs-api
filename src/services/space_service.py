@@ -160,6 +160,8 @@ def get_pdf(space_id: int):
 
     filename = space.name + '.pdf'
 
+    print(pdf_bytes)
+
     return send_file(pdf_bytes, download_name=filename, mimetype='application/pdf')
 
 

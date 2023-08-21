@@ -1,6 +1,7 @@
 from typing import TypedDict
 
 from marshmallow import Schema, fields
+from flask_smorest.fields import Upload
 
 
 class TableSchema(Schema):
@@ -22,6 +23,10 @@ class TableCreateSchema(Schema):
     table_number = fields.Int(required=True)
     n_chairs = fields.Int(required=True)
     reservable = fields.Bool(required=True)
+
+
+class TableQRSchema(Schema):
+    qr_code = Upload(required=True)
 
 
 class TableInputType(TypedDict):
