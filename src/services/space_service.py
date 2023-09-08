@@ -100,6 +100,47 @@ def add_table(table_data, space_id: int):
     return space
 
 
+@blp.route('/<int:space_id>/table/<int:table_id>', methods=['DELETE'])
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
+@blp.response(204, SpaceSchema)
+def delete_table(space_id, table_id):
+    """
+    Delete a table from a space
+    :param space_id: Space id
+    :param table_id: Table id
+    :return: SpaceSchema
+    """
+    space = Space.find(space_id)
+    table = Table.find(table_id)
+    space.delete_table(table)
+
+    space.update()
+
+    return space
+
+
+@blp.route('/<int:space_id>/table/<int:table_id>', methods=['PATCH'])
+@blp.arguments(TableCreateSchema)
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
+@blp.response(200, SpaceSchema)
+def edit_table(table_data, space_id: int, table_id: int):
+    """
+    Edit a table from a space
+    :param table_data: CreateTableSchema
+    :param space_id: Space id
+    :param table_id: Table id
+    :return: SpaceSchema
+    """
+    space = Space.find(space_id)
+    table = Table.find(table_id)
+    space.edit_table(table, table_data)
+
+
+    return space
+
+
 @blp.route('/<int:space_id>', methods=['PUT'])
 @blp.arguments(SpaceCreateSchema)
 @jwt_required()

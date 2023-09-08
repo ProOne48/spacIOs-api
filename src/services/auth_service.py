@@ -34,7 +34,7 @@ def google_login(login_data):
             id_info = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID)
 
         except GoogleAuthError as e:
-            abort(401, message=e.message)
+            abort(401)
             return False
 
     if id_info.get('sub') or token == 'Aasdkjbauypesd23lkjadk*-%asdkjbasd':

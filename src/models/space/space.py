@@ -51,6 +51,7 @@ class Space(RestItem):
         """
         self.max_capacity -= table.n_chairs
         self.tables.remove(table)
+        table.delete()
 
     def edit_table(self, table_data: Table) -> None:
         """
