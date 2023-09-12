@@ -6,7 +6,7 @@ from google.auth.exceptions import GoogleAuthError
 from google.auth.transport import requests
 
 from base.settings import settings
-from src.models.space_owner import SpaceOwnerGoogleLoginSchema, SpaceOwnerSchema, SpaceOwner, AuthResponseSchema
+from src.models.space_owner import SpaceOwnerGoogleLoginSchema, SpaceOwner, AuthResponseSchema
 from google.oauth2 import id_token
 
 blp = Blueprint(
@@ -33,7 +33,7 @@ def google_login(login_data):
         try:
             id_info = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID)
 
-        except GoogleAuthError as e:
+        except GoogleAuthError:
             abort(401)
             return False
 
@@ -58,6 +58,7 @@ def google_login(login_data):
 
 @blp.route('/logout', methods=['DELETE'])
 @blp.doc(security=[{'JWT': []}])
+@jwt_required()
 @blp.response(200)
 def logout():
     """

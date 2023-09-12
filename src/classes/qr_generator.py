@@ -1,7 +1,6 @@
 import qrcode
 import pyshorteners
 from qrcode.image.pil import PilImage
-from qrcode.image.pure import PyPNGImage
 
 
 class QRGenerator:

@@ -3,10 +3,9 @@ import io
 from flask import abort, send_file
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
-import qrcode
 
 from base.settings import settings
-from src.models.tables import Table, TableSchema, TableListSchema, TableCreateSchema
+from src.models.tables import Table, TableSchema, TableListSchema
 
 blp = Blueprint(
     name='Table',
@@ -36,7 +35,11 @@ def get_table_by_id(table_id: int):
     :param table_id: Table id
     :return: TableSchema
     """
-    return Table.find(table_id)
+    table = Table.find(table_id)
+    if not table:
+        abort(404, message='Table not found')
+
+    return table
 
 
 @blp.route('/<int:table_id>/qr-code', methods=['GET'])
@@ -50,6 +53,10 @@ def get_qrcode(table_id: int):
     :return: QR code
     """
     table = Table.find(table_id)
+
+    if not table:
+        abort(404, message='Table not found')
+
     qr_code = table.generate_qr_code()
 
     qr_code_bytes = io.BytesIO()

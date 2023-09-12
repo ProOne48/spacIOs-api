@@ -1,10 +1,10 @@
 from typing import Optional, List
 
-from sqlalchemy import ForeignKey, LargeBinary
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from base.rest_item import RestItem
-from src.models.tables import Table, TableInputType
+from src.models.tables import Table, TableInputType, TableNumberExistError
 
 
 class Space(RestItem):
@@ -20,7 +20,7 @@ class Space(RestItem):
     space_owner_id: Mapped[int] = mapped_column(ForeignKey('space_owner.id'))
     capacity: Mapped[Optional[int]] = mapped_column()
     pdf_img: Mapped[Optional[bytes]] = mapped_column()
-    tables: Mapped[Optional[List['Table']]] = relationship() #noqa: F821
+    tables: Mapped[Optional[List['Table']]] = relationship()
 
     def check_table_number(self, table_number: int) -> bool:
         """
@@ -62,5 +62,3 @@ class Space(RestItem):
                 table = table_data
                 table.update()
                 break
-
-

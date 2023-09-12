@@ -137,7 +137,6 @@ def edit_table(table_data, space_id: int, table_id: int):
     table = Table.find(table_id)
     space.edit_table(table, table_data)
 
-
     return space
 
 
