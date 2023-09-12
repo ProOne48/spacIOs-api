@@ -6,7 +6,7 @@ from base.settings import settings
 from src.app import context
 from src.models.space_owner import SpaceOwner, SpaceOwnerListSchema, SpaceOwnerSchema, CreateSpaceOwnerSchema
 
-api_url = settings.API_BASE_NAME + '/space_owner'
+api_url = settings.API_BASE_NAME + '/space-owner'
 api_name = 'SpaceOwner'
 api_description = 'SpaceOwner service'
 
@@ -30,6 +30,8 @@ def get_space_owners():
 
 
 @blp.route('/<int:space_owner_id>', methods=['GET'])
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceOwnerSchema)
 def get_space_owner_by_id(space_owner_id: int):
     """
@@ -41,7 +43,8 @@ def get_space_owner_by_id(space_owner_id: int):
 
 
 @blp.route('/actual-space-owner', methods=['GET'])
-@jwt_required
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceOwnerSchema)
 def get_actual_user():
     """
@@ -77,6 +80,8 @@ def create_space_owner(space_owner_data):
 
 
 @blp.route('/<int:space_owner_id>', methods=['PUT'])
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.arguments(SpaceOwnerSchema)
 @blp.response(200, SpaceOwnerSchema)
 def update_space_owner(space_owner_data: dict, space_owner_id: int):
@@ -99,6 +104,8 @@ def update_space_owner(space_owner_data: dict, space_owner_id: int):
 
 
 @blp.route('/<int:space_owner_id>', methods=['DELETE'])
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
 @blp.response(204)
 def delete_space_owner(space_owner_id: int):
     """

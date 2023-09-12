@@ -23,9 +23,15 @@ class SpaceOwnerGoogleLoginSchema(Schema):
     token = fields.String(required=True, metadata={"description": "Token for Google"})
     email = fields.Email(required=True, metadata={"description": "Email address of the user"})
     name = fields.String(required=True, metadata={"description": "Name of the user"})
+    remember = fields.Boolean(required=False, metadata={"description": "Remember user"})
 
 
 class UserAuthSchema(Schema):
     id = fields.Integer(required=True, metadata={"description": "User id"})
     name = fields.String(required=True, metadata={"description": "User name"})
     email = fields.Email(required=True, metadata={"description": "User email"})
+
+
+class AuthResponseSchema(Schema):
+    token = fields.String(required=True, metadata={"description": "Token for Google"})
+    login_ok = fields.Boolean(required=True, metadata={"description": "Login ok"})
