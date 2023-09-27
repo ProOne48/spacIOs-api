@@ -1,5 +1,5 @@
 from flask import jsonify
-from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies, jwt_required
+from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
 from flask import abort
 from flask_smorest import Blueprint
 from google.auth.exceptions import GoogleAuthError
@@ -58,7 +58,6 @@ def google_login(login_data):
 
 @blp.route('/logout', methods=['DELETE'])
 @blp.doc(security=[{'JWT': []}])
-@jwt_required()
 @blp.response(200)
 def logout():
     """

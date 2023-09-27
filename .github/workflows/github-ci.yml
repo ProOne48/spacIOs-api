@@ -1,9 +1,9 @@
 name: SpacIOs API CI
 
 on:
-  push:
   pull_request:
     branches: [ "main" ]
+
 env:
   DOCKER_IMAGE: spaciosgithubci/spaciosapi
   DOCKER_REPOSITORY: hr-portal-api
@@ -101,3 +101,5 @@ jobs:
         DYNACONF_DB_HOST: postgres
         DYNACONF_DB_PORT: 5432
         DYNACONF_DB_USER: 'postgres'
+
+#    TODO Add codeCoverage to CodeCov
