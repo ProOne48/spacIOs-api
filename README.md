@@ -41,3 +41,53 @@ docker-compose -f ./docker/db.docker-compose.yml --env-file ./docker/db-local.en
 - Create a `.secrets.local.toml` file from `template.secrets.local.toml`
 - Customize the environment vars in the `.secrets.local.toml` file.
 - If you need to modify the db-local.env file be careful to change the `.secrets.local.toml` so the data match.
+
+
+## Alembic guide for database migrations
+
+### Upgrading & downgrading your database
+
+The upgrade database command is:
+
+```shell
+alembic upgrade <revision-number>
+```
+
+Where `<revision-number>` is the hexadecimal ID that you can find inside the revision file.
+
+To upgrade to the latest version you can simply run:
+
+```shell
+alembic upgrade head
+```
+
+If for some reason you want to roll back to a previous version of the database, you can do it with:
+
+```shell
+alembic downgrade <revision-number>
+```
+
+To downgrade to the first revision run:
+
+```shell
+alembic downgrade base
+```
+
+### Creating a new database migration
+
+Database revision files are stored in `./src/db/migrations/versions`. In order to create a new database migration you
+should create a new migration file and fill the two `upgrade` & `downgrade` functions. To do so, follow these steps:
+
+- Run the command:
+  ```shell
+  alembic revision -m "my revision description" --autogenerate
+  ```
+- A new file with the format `YYYYMMDD_HEXNUMBER_DESCRIPTION.py` will be created at `./src/db/migrations/versions/`.
+  Open it.
+- Review the `upgrade` function. The `autogenerate` param should already have created the instructions to apply. Check
+  that everything is fine.
+- Review the `downgrade` function. The `autogenerate` param should already have created the instructions to apply to
+  roll back to the previous version. Check that everything is fine.
+- If the `upgrade` & `downgrade` functions are empty then you probably forgot to add the model to
+  the `./src/db/migrations/env.py` file.
+- Test your migration with the console commands above.
