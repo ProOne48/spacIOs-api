@@ -9,6 +9,8 @@ from base.rest_item import BaseSQL
 
 from src.models.space_owner import SpaceOwner  # noqa: F401
 from src.models.space import Space  # noqa: F401
+from src.models.tables import Table  # noqa: F401
+from src.models.statistics.statistics import Statistics  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

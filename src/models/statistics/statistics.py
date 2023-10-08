@@ -22,35 +22,59 @@ class Statistics(RestItem):
     day_of_week: Mapped[str] = mapped_column()
     duration: Mapped[int] = mapped_column()
 
-    def total_space_use(self):
+    @classmethod
+    def space_statistics(cls, space_id: int):
+        """
+        Return all statistics Usage from this space
+        """
+        statistics_data = {
+            'total_space_use': cls.total_space_use(space_id),
+            'average_space_use': cls.average_space_use(space_id),
+            'average_space_use_by_day': cls.average_space_use_by_day(space_id),
+        }
+
+        return statistics_data
+
+    @classmethod
+    def total_space_use(cls, space_id: int):
         """
         Return the total use of the table
         """
-        return self.session.query(Statistics).filter(Statistics.space_id == self.space_id).count()
+        return cls.session.query(Statistics).filter(Statistics.space_id == space_id).count()
 
-    def total_table_use(self):
+    @classmethod
+    def total_table_use(cls, table_id: int):
         """
         Return the total use of the table
         """
-        return self.session.query(Statistics).filter(Statistics.table_id == self.table_id).count()
+        return cls.session.query(Statistics).filter(Statistics.table_id == table_id).count()
 
-    def average_space_use(self):
+    @classmethod
+    def average_space_use(cls, space_id: int):
         """
         Return the average use of the Space
         """
-        return self.session.query(Statistics, func.avg(Statistics.duration).label('avg_duration')).group_by(
-            Statistics.space_id).filter(Statistics.space_id == self.space_id).all()
+        return cls.session.query(func.avg(Statistics.n_people).label('avg_people')).filter(Statistics.space_id == space_id).all()
 
-    def average_table_use(self):
+    @classmethod
+    def average_space_use_by_day(cls, space_id: int):
+        """
+        Return the average use of the Space
+        """
+        return cls.session.query(Statistics.day_of_week, func.avg(Statistics.n_people).label('avg_people')).group_by(Statistics.day_of_week).filter(Statistics.space_id == space_id).all()
+
+    @classmethod
+    def average_table_use(cls, table_id: int):
         """
         Return the average use of the table
         """
-        return self.session.query(Statistics, func.avg(Statistics.duration).label('avg_duration')).group_by(
-            Statistics.table_id).filter(Statistics.table_id == self.table_id).all()
+        return cls.session.query(Statistics, func.avg(Statistics.duration).label('avg_duration')).group_by(
+            Statistics.table_id).filter(Statistics.table_id == cls.table_id).all()
 
-    def space_use_by_day(self):
+    @classmethod
+    def space_use_by_day(cls, space_id: int):
         """
         Return the average use of the table
         """
-        return self.session.query(Statistics).group_by(
-            Statistics.day_of_week).filter(Statistics.space_id == self.space_id).count()
+        return cls.session.query(Statistics.day_of_week).group_by(
+            Statistics.day_of_week).filter(Statistics.space_id == space_id).count()

@@ -39,7 +39,7 @@ if settings.DEBUG_SQL > 0:
 
     app.wsgi_app = EasyProfileMiddleware(app.wsgi_app)
 
-from src.services import space_owner_service, space_service, auth_service, table_service
+from src.services import space_owner_service, space_service, auth_service, table_service, statistics_service
 
 # TODO: Add the blueprints to the app
 
@@ -47,6 +47,7 @@ api.register_blueprint(space_owner_service.blp)
 api.register_blueprint(space_service.blp)
 api.register_blueprint(auth_service.blp)
 api.register_blueprint(table_service.blp)
+api.register_blueprint(statistics_service.blp)
 
 
 @app.errorhandler(500)
