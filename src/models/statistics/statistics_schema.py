@@ -5,11 +5,9 @@ class StatisticsSpaceUsageSchema(Schema):
     """
     Statistics Space Usage schema class
     """
-    average_space_use = fields.Integer()
-    space_use_by_day = fields.Integer()
+    average_space_use = fields.Decimal()
+    average_space_use_by_day = fields.List(fields.Tuple((fields.String(), fields.Decimal())))
     total_space_use = fields.Integer()
-
-
 
 
 class StatisticsTableUsageSchema(Schema):

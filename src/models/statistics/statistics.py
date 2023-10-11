@@ -27,6 +27,7 @@ class Statistics(RestItem):
         """
         Return all statistics Usage from this space
         """
+
         statistics_data = {
             'total_space_use': cls.total_space_use(space_id),
             'average_space_use': cls.average_space_use(space_id),
@@ -54,7 +55,7 @@ class Statistics(RestItem):
         """
         Return the average use of the Space
         """
-        return cls.session.query(func.avg(Statistics.n_people).label('avg_people')).filter(Statistics.space_id == space_id).all()
+        return cls.session.query(func.avg(Statistics.n_people)).filter(Statistics.space_id == space_id).first()[0]
 
     @classmethod
     def average_space_use_by_day(cls, space_id: int):
