@@ -32,7 +32,7 @@ class Statistics(RestItem):
         statistics_data = {
             'total_space_use': cls.total_space_use(space_id),
             'average_space_use': cls.average_space_use(space_id),
-            'average_space_use_by_day': cls.formatting_space_use_by_day(avg_space_use_by_day)
+            'average_space_use_per_day': cls.formatting_space_use_by_day(avg_space_use_by_day)
         }
 
         return statistics_data
