@@ -16,9 +16,8 @@ class Statistics(RestItem):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     space_id: Mapped[int] = mapped_column(ForeignKey('space.id'))
     table_id: Mapped[int] = mapped_column(ForeignKey('table.id'))
-    start_date: Mapped[datetime] = mapped_column()
+    start_date: Mapped[datetime] = mapped_column(default=func.now())
     n_people: Mapped[int] = mapped_column()
-    n_reservations: Mapped[int] = mapped_column()
     day_of_week: Mapped[str] = mapped_column()
     duration: Mapped[int] = mapped_column()
 
@@ -57,14 +56,17 @@ class Statistics(RestItem):
         """
         Return the average use of the Space
         """
-        return cls.session.query(func.avg(Statistics.n_people)).filter(Statistics.space_id == space_id).first()[0]
+        # TODO: do it for the last week or month?
+        return cls.session.query(func.sum(Statistics.n_people)).filter(Statistics.space_id == space_id).first()[0]
 
     @classmethod
     def average_space_use_by_day(cls, space_id: int):
         """
         Return the average use of the Space
         """
-        return cls.session.query(Statistics.day_of_week, func.avg(Statistics.n_people).label('avg_people')).group_by(Statistics.day_of_week).filter(Statistics.space_id == space_id).all()
+        return cls.session.query(
+            Statistics.day_of_week, func.avg(Statistics.n_people), func.sum(Statistics.n_people)
+        ).group_by(Statistics.day_of_week).filter(Statistics.space_id == space_id).all()
 
     @classmethod
     def average_table_use(cls, table_id: int):
@@ -91,7 +93,8 @@ class Statistics(RestItem):
         for item in data:
             formatted_day = {
                 'day': item[0],
-                'average_space_use': item[1]
+                'average_space_use': item[1],
+                'total_space_use': item[2]
             }
             formatted_data.append(formatted_day)
 
