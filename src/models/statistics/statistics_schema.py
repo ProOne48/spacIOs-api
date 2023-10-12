@@ -1,12 +1,17 @@
 from marshmallow import Schema, fields
 
 
+class StatisticsUsageByDaySchema(Schema):
+    day = fields.String()
+    average_space_use = fields.Decimal()
+
+
 class StatisticsSpaceUsageSchema(Schema):
     """
     Statistics Space Usage schema class
     """
     average_space_use = fields.Decimal()
-    average_space_use_by_day = fields.List(fields.Tuple((fields.String(), fields.Decimal())))
+    average_space_use_by_day = fields.List(fields.Nested(StatisticsUsageByDaySchema))
     total_space_use = fields.Integer()
 
 

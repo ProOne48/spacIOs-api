@@ -28,10 +28,12 @@ class Statistics(RestItem):
         Return all statistics Usage from this space
         """
 
+        avg_space_use_by_day = cls.average_space_use_by_day(space_id)
+
         statistics_data = {
             'total_space_use': cls.total_space_use(space_id),
             'average_space_use': cls.average_space_use(space_id),
-            'average_space_use_by_day': cls.average_space_use_by_day(space_id),
+            'average_space_use_by_day': cls.formatting_space_use_by_day(avg_space_use_by_day)
         }
 
         return statistics_data
@@ -79,3 +81,18 @@ class Statistics(RestItem):
         """
         return cls.session.query(Statistics.day_of_week).group_by(
             Statistics.day_of_week).filter(Statistics.space_id == space_id).count()
+
+    @staticmethod
+    def formatting_space_use_by_day(data):
+        """
+        Return the average use of the table formatted
+        """
+        formatted_data = []
+        for item in data:
+            formatted_day = {
+                'day': item[0],
+                'average_space_use': item[1]
+            }
+            formatted_data.append(formatted_day)
+
+        return formatted_data

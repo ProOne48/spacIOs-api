@@ -35,5 +35,4 @@ def get_statistics_by_space(space_id: int):
     :param space_id: Space id
     :return: A list of statistics
     """
-    print(Statistics.space_statistics(space_id))
     return Statistics.space_statistics(space_id)
