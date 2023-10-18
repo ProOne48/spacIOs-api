@@ -1,8 +1,9 @@
-from flask_smorest import Blueprint
+from flask_smorest import Blueprint, abort
 
 from base.settings import settings
 from src.models.statistics import StatisticsSpaceUsageSchema
 from src.models.statistics.statistics import Statistics
+from src.models.statistics.statistics_schema import StatisticsSchema
 
 api_url = settings.API_BASE_NAME + '/statistics'
 api_name = 'Statistics'
@@ -36,3 +37,21 @@ def get_statistics_by_space(space_id: int):
     :return: A list of statistics
     """
     return Statistics.space_statistics(space_id)
+
+
+@blp.route('', methods=['POST'])
+@blp.arguments(StatisticsSchema)
+@blp.response(201)
+def create_statistics(statistics_data: StatisticsSchema):
+    """
+    Create a new statistics
+    :param statistics_data: StatisticsSchema
+    :return: StatisticsSchema
+    """
+    statistics = Statistics()
+    statistics.add_from_dict(statistics_data)
+    try:
+        statistics.insert()
+    except Exception as e:
+        abort(400, message=str(e))
+

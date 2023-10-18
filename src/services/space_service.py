@@ -7,7 +7,7 @@ from flask_smorest import Blueprint
 
 from base.settings import settings
 from src.app import context
-from src.models.space import Space, SpaceSchema, SpaceListSchema, SpaceCreateSchema, SpacePDFSchema
+from src.models.space import Space, SpaceSchema, SpaceListSchema, SpaceCreateSchema, SpacePDFSchema, SpaceReducedSchema
 from src.models.tables import TableCreateSchema, Table
 
 blp = Blueprint(
@@ -48,6 +48,19 @@ def get_actual_spaces():
 @blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceSchema)
 def get_space_by_id(space_id: int):
+    """
+    Get a space by id
+    :param space_id: Space id
+    :return: SpaceSchema
+    """
+    return Space.find(space_id)
+
+
+@blp.route('/<int:space_id>/reduced', methods=['GET'])
+@jwt_required()
+@blp.doc(security=[{'JWT': []}])
+@blp.response(200, SpaceReducedSchema)
+def get_space_reduced_by_id(space_id: int):
     """
     Get a space by id
     :param space_id: Space id
@@ -199,8 +212,6 @@ def get_pdf(space_id: int):
         pdf_bytes = io.BytesIO(space.pdf_img)
 
     filename = space.name + '.pdf'
-
-    print(pdf_bytes)
 
     return send_file(pdf_bytes, download_name=filename, mimetype='application/pdf')
 

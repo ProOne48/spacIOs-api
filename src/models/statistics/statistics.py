@@ -29,6 +29,7 @@ class Statistics(RestItem):
 
         avg_space_use_by_day = cls.average_space_use_by_day(space_id)
 
+        # TODO: show porcentage of use of the space
         statistics_data = {
             'total_space_use': cls.total_space_use(space_id),
             'average_space_use': cls.average_space_use(space_id),
@@ -37,6 +38,7 @@ class Statistics(RestItem):
 
         return statistics_data
 
+    # TODO: show for hours for days
     @classmethod
     def total_space_use(cls, space_id: int):
         """
