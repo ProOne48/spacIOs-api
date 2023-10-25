@@ -41,7 +41,7 @@ def get_statistics_by_space(space_id: int):
 @blp.response(201)
 def create_statistics(statistics_data: StatisticsSchema):
     """
-        Create a new statistics
+    Create a new statistics
     :param statistics_data: StatisticsSchema
     :return: StatisticsSchema
     """
