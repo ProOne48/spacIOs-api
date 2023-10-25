@@ -14,11 +14,12 @@ class BaseSQL(DeclarativeBase):
     """
     Base class for all SQLAlchemy models
     """
+
     query = Session.query_property()
     session = Session
 
 
-RestItemSubClass = TypeVar('RestItemSubClass', bound='RestItem')
+RestItemSubClass = TypeVar("RestItemSubClass", bound="RestItem")
 
 
 class RestItem(BaseSQL):
@@ -28,11 +29,12 @@ class RestItem(BaseSQL):
 
     Where all CRUDL methods for REST items are defined
     """
+
     __abstract__ = True
     """
     Query object for running select queries
     """
-    query: 'Query'
+    query: "Query"
 
     """
     Session object for running insert, update and delete queries
@@ -50,15 +52,15 @@ class RestItem(BaseSQL):
         return cls.session.get(cls, item_id)
 
     @classmethod
-    def find_by(cls: Type[RestItemSubClass], criteria: List = None) -> Optional[RestItemSubClass]:
+    def find_by(
+        cls: Type[RestItemSubClass], criteria: List = None
+    ) -> Optional[RestItemSubClass]:
         """
         Finds the first item matching the criteria
         :param criteria: criteria to find the item
         :return: an instance of the class matching the criteria
         """
-        return cls.session.scalars(
-            select(cls).where(*criteria)
-        ).first()
+        return cls.session.scalars(select(cls).where(*criteria)).first()
 
     @classmethod
     def list(cls, criteria: List = None) -> (List[RestItemSubClass], int):

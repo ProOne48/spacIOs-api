@@ -22,13 +22,15 @@ def get_db_string(db_name: str = None) -> str:
     return f"postgresql+psycopg2://{conn_str}"
 
 
-def create_aps_engine(db_name: str = None) -> 'Engine':
+def create_aps_engine(db_name: str = None) -> "Engine":
     """
     Returns a SQLAlchemy engine with the configuration from settings.py
     :param db_name: The custom database name. Leave empty to use default connection.
     :return: the created engine
     """
-    return create_engine(get_db_string(db_name), echo=settings.DEBUG_SQL >= 2, future=True)
+    return create_engine(
+        get_db_string(db_name), echo=settings.DEBUG_SQL >= 2, future=True
+    )
 
 
 Session = scoped_session(sessionmaker(bind=create_aps_engine()))

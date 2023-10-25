@@ -14,6 +14,15 @@ class SpaceSchema(Schema):
     capacity = fields.Integer(required=True)
 
 
+class SpaceReducedSchema(Schema):
+    id = fields.Integer(required=True)
+    name = fields.String(required=True)
+    description = fields.String(required=True)
+    max_capacity = fields.Integer(required=True)
+    tables = fields.List(fields.Nested(TableSchema))
+    capacity = fields.Integer(required=True)
+
+
 class SpaceListSchema(Schema):
     items = fields.List(fields.Nested(SpaceSchema))
     total = fields.Integer(required=True)

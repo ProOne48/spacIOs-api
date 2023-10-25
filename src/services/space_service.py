@@ -7,18 +7,25 @@ from flask_smorest import Blueprint
 
 from base.settings import settings
 from src.app import context
-from src.models.space import Space, SpaceSchema, SpaceListSchema, SpaceCreateSchema, SpacePDFSchema
+from src.models.space import (
+    Space,
+    SpaceSchema,
+    SpaceListSchema,
+    SpaceCreateSchema,
+    SpacePDFSchema,
+    SpaceReducedSchema,
+)
 from src.models.tables import TableCreateSchema, Table
 
 blp = Blueprint(
-    name='Space',
-    description='Space service',
-    url_prefix=settings.API_BASE_NAME + '/space',
-    import_name=__name__
+    name="Space",
+    description="Space service",
+    url_prefix=settings.API_BASE_NAME + "/space",
+    import_name=__name__,
 )
 
 
-@blp.route('', methods=['GET'])
+@blp.route("", methods=["GET"])
 @blp.response(200, SpaceListSchema)
 def get_spaces():
     """
@@ -26,12 +33,12 @@ def get_spaces():
     :return: A list of spaces
     """
     items, total = Space.list()
-    return {'items': items, 'total': total}
+    return {"items": items, "total": total}
 
 
-@blp.route('/actual-spaces', methods=['GET'])
+@blp.route("/actual-spaces", methods=["GET"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200, SpaceListSchema)
 def get_actual_spaces():
     """
@@ -40,12 +47,12 @@ def get_actual_spaces():
     """
     items, total = Space.list(criteria=[Space.space_owner_id == context.get_user_id()])
 
-    return {'items': items, 'total': total}
+    return {"items": items, "total": total}
 
 
-@blp.route('/<int:space_id>', methods=['GET'])
+@blp.route("/<int:space_id>", methods=["GET"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200, SpaceSchema)
 def get_space_by_id(space_id: int):
     """
@@ -56,10 +63,21 @@ def get_space_by_id(space_id: int):
     return Space.find(space_id)
 
 
-@blp.route('', methods=['POST'])
+@blp.route("/<int:space_id>/reduced", methods=["GET"])
+@blp.response(200, SpaceReducedSchema)
+def get_space_reduced_by_id(space_id: int):
+    """
+    Get a space by id
+    :param space_id: Space id
+    :return: SpaceSchema
+    """
+    return Space.find(space_id)
+
+
+@blp.route("", methods=["POST"])
 @blp.arguments(SpaceCreateSchema)
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200, SpaceSchema)
 def create_space(space_data):
     """
@@ -80,10 +98,10 @@ def create_space(space_data):
     return space
 
 
-@blp.route('/<int:space_id>/table', methods=['PUT'])
+@blp.route("/<int:space_id>/table", methods=["PUT"])
 @blp.arguments(TableCreateSchema)
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200, SpaceSchema)
 def add_table(table_data, space_id: int):
     """
@@ -100,9 +118,9 @@ def add_table(table_data, space_id: int):
     return space
 
 
-@blp.route('/<int:space_id>/table/<int:table_id>', methods=['DELETE'])
+@blp.route("/<int:space_id>/table/<int:table_id>", methods=["DELETE"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(204, SpaceSchema)
 def delete_table(space_id, table_id):
     """
@@ -120,10 +138,10 @@ def delete_table(space_id, table_id):
     return space
 
 
-@blp.route('/<int:space_id>/table/<int:table_id>', methods=['PATCH'])
+@blp.route("/<int:space_id>/table/<int:table_id>", methods=["PATCH"])
 @blp.arguments(TableCreateSchema)
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200, SpaceSchema)
 def edit_table(table_data, space_id: int, table_id: int):
     """
@@ -140,10 +158,10 @@ def edit_table(table_data, space_id: int, table_id: int):
     return space
 
 
-@blp.route('/<int:space_id>', methods=['PUT'])
+@blp.route("/<int:space_id>", methods=["PUT"])
 @blp.arguments(SpaceCreateSchema)
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200, SpaceSchema)
 def edit_space(space_data, space_id: int):
     """
@@ -162,9 +180,9 @@ def edit_space(space_data, space_id: int):
     return space
 
 
-@blp.route('/<int:space_id>', methods=['DELETE'])
+@blp.route("/<int:space_id>", methods=["DELETE"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(204)
 def delete_space(space_id: int):
     """
@@ -174,7 +192,7 @@ def delete_space(space_id: int):
     """
     space = Space.find(space_id)
     if not space:
-        abort(404, message='Space not found')
+        abort(404, message="Space not found")
     try:
         space.delete()
     except Exception as e:
@@ -183,7 +201,7 @@ def delete_space(space_id: int):
     return None
 
 
-@blp.route('/<int:space_id>/pdf', methods=['GET'])
+@blp.route("/<int:space_id>/pdf", methods=["GET"])
 @blp.response(200)
 def get_pdf(space_id: int):
     """
@@ -193,22 +211,20 @@ def get_pdf(space_id: int):
     """
     space = Space.find(space_id)
     if not space:
-        abort(404, message='Space not found')
+        abort(404, message="Space not found")
 
     if space.pdf_img:
         pdf_bytes = io.BytesIO(space.pdf_img)
 
-    filename = space.name + '.pdf'
+    filename = space.name + ".pdf"
 
-    print(pdf_bytes)
-
-    return send_file(pdf_bytes, download_name=filename, mimetype='application/pdf')
+    return send_file(pdf_bytes, download_name=filename, mimetype="application/pdf")
 
 
-@blp.route('/<int:space_id>/pdf', methods=['PUT'])
+@blp.route("/<int:space_id>/pdf", methods=["PUT"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
-@blp.arguments(SpacePDFSchema, location='files')
+@blp.doc(security=[{"JWT": []}])
+@blp.arguments(SpacePDFSchema, location="files")
 @blp.response(200)
 def upload_pdf(file_data, space_id: int):
     """
@@ -219,9 +235,9 @@ def upload_pdf(file_data, space_id: int):
     """
     space = Space.find(space_id)
     if not space:
-        abort(404, message='Space not found')
+        abort(404, message="Space not found")
 
-    space.pdf_img = request.files['pdf'].read()
+    space.pdf_img = request.files["pdf"].read()
 
     try:
         space.update()

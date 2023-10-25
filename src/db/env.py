@@ -9,6 +9,8 @@ from base.rest_item import BaseSQL
 
 from src.models.space_owner import SpaceOwner  # noqa: F401
 from src.models.space import Space  # noqa: F401
+from src.models.tables import Table  # noqa: F401
+from src.models.statistics.statistics import Statistics  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -30,7 +32,7 @@ target_metadata = BaseSQL.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-config.set_main_option('sqlalchemy.url', get_db_string())
+config.set_main_option("sqlalchemy.url", get_db_string())
 
 
 def run_migrations_offline() -> None:
@@ -71,9 +73,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
