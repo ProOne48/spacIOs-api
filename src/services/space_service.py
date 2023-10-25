@@ -57,8 +57,6 @@ def get_space_by_id(space_id: int):
 
 
 @blp.route('/<int:space_id>/reduced', methods=['GET'])
-@jwt_required()
-@blp.doc(security=[{'JWT': []}])
 @blp.response(200, SpaceReducedSchema)
 def get_space_reduced_by_id(space_id: int):
     """
