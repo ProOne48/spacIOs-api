@@ -14,12 +14,13 @@ class SpaceOwner(RestItem):
     """
     SpaceOwner model class
     """
-    __tablename__ = 'space_owner'
+
+    __tablename__ = "space_owner"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(80))
     email: Mapped[str] = mapped_column(String(120), unique=True)
-    spaces: Mapped[Optional[List['Space']]] = relationship()  # noqa: F821
+    spaces: Mapped[Optional[List["Space"]]] = relationship()  # noqa: F821
 
     @classmethod
     def verify_google_token(cls, token: str) -> bool:
@@ -30,10 +31,12 @@ class SpaceOwner(RestItem):
         """
         try:
             # Specify the CLIENT_ID of the app that accesses the backend:
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID)
+            idinfo = id_token.verify_oauth2_token(
+                token, requests.Request(), settings.GOOGLE_CLIENT_ID
+            )
 
             # Get the user's Google Account ID from the decoded token, if the key doesn't exist the process failed.
-            return idinfo.get('sub', False)
+            return idinfo.get("sub", False)
         except GoogleAuthError:
             # Invalid token
             return False
@@ -53,7 +56,7 @@ class SpaceOwner(RestItem):
         :return: dict with the data
         """
         return {
-            'id': self.id,
-            'name': self.name,
-            'email': self.email,
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
         }

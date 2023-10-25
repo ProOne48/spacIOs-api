@@ -4,21 +4,23 @@ from flask_smorest import Blueprint
 
 from base.settings import settings
 from src.app import context
-from src.models.space_owner import SpaceOwner, SpaceOwnerListSchema, SpaceOwnerSchema, CreateSpaceOwnerSchema
+from src.models.space_owner import (
+    SpaceOwner,
+    SpaceOwnerListSchema,
+    SpaceOwnerSchema,
+    CreateSpaceOwnerSchema,
+)
 
-api_url = settings.API_BASE_NAME + '/space-owner'
-api_name = 'SpaceOwner'
-api_description = 'SpaceOwner service'
+api_url = settings.API_BASE_NAME + "/space-owner"
+api_name = "SpaceOwner"
+api_description = "SpaceOwner service"
 
 blp = Blueprint(
-    name=api_name,
-    description=api_description,
-    url_prefix=api_url,
-    import_name=__name__
+    name=api_name, description=api_description, url_prefix=api_url, import_name=__name__
 )
 
 
-@blp.route('', methods=['GET'])
+@blp.route("", methods=["GET"])
 @blp.response(200, SpaceOwnerListSchema)
 def get_space_owners():
     """
@@ -26,12 +28,12 @@ def get_space_owners():
     :return: A list of space owners
     """
     items, total = SpaceOwner.list()
-    return {'items': items, 'total': total}
+    return {"items": items, "total": total}
 
 
-@blp.route('/<int:space_owner_id>', methods=['GET'])
+@blp.route("/<int:space_owner_id>", methods=["GET"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200, SpaceOwnerSchema)
 def get_space_owner_by_id(space_owner_id: int):
     """
@@ -42,9 +44,9 @@ def get_space_owner_by_id(space_owner_id: int):
     return SpaceOwner.find(space_owner_id)
 
 
-@blp.route('/actual', methods=['GET'])
+@blp.route("/actual", methods=["GET"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200, SpaceOwnerSchema)
 def get_actual_user():
     """
@@ -60,7 +62,7 @@ def get_actual_user():
     return space_owner
 
 
-@blp.route('', methods=['POST'])
+@blp.route("", methods=["POST"])
 @blp.arguments(CreateSpaceOwnerSchema)
 @blp.response(200, SpaceOwnerSchema)
 def create_space_owner(space_owner_data):
@@ -79,9 +81,9 @@ def create_space_owner(space_owner_data):
     return space_owner
 
 
-@blp.route('/<int:space_owner_id>', methods=['PUT'])
+@blp.route("/<int:space_owner_id>", methods=["PUT"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.arguments(SpaceOwnerSchema)
 @blp.response(200, SpaceOwnerSchema)
 def update_space_owner(space_owner_data: dict, space_owner_id: int):
@@ -93,7 +95,7 @@ def update_space_owner(space_owner_data: dict, space_owner_id: int):
     """
     space_owner = SpaceOwner.find(space_owner_id)
     if space_owner is None:
-        abort(404, message='Space owner not found')
+        abort(404, message="Space owner not found")
     space_owner.add_from_dict(space_owner_data)
     try:
         space_owner.update()
@@ -103,9 +105,9 @@ def update_space_owner(space_owner_data: dict, space_owner_id: int):
     return space_owner
 
 
-@blp.route('/<int:space_owner_id>', methods=['DELETE'])
+@blp.route("/<int:space_owner_id>", methods=["DELETE"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(204)
 def delete_space_owner(space_owner_id: int):
     """
@@ -115,7 +117,7 @@ def delete_space_owner(space_owner_id: int):
     """
     space_owner = SpaceOwner.find(space_owner_id)
     if space_owner is None:
-        abort(404, message='Space owner not found')
+        abort(404, message="Space owner not found")
     try:
         space_owner.delete()
     except Exception as e:

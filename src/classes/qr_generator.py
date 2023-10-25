@@ -13,7 +13,7 @@ class QRGenerator:
             border=4,
         )
 
-        url = 'http://localhost:4200/' + str(space_id) + '/' + str(table_id)
+        url = "http://localhost:4200/" + str(space_id) + "/" + str(table_id)
 
         s = pyshorteners.Shortener()
         short_url = s.tinyurl.short(url)

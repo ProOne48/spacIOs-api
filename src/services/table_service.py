@@ -8,14 +8,14 @@ from base.settings import settings
 from src.models.tables import Table, TableSchema, TableListSchema
 
 blp = Blueprint(
-    name='Table',
-    description='Table service',
-    url_prefix=settings.API_BASE_NAME + '/table',
-    import_name=__name__
+    name="Table",
+    description="Table service",
+    url_prefix=settings.API_BASE_NAME + "/table",
+    import_name=__name__,
 )
 
 
-@blp.route('', methods=['GET'])
+@blp.route("", methods=["GET"])
 @blp.response(200, TableListSchema)
 def get_tables():
     """
@@ -24,10 +24,10 @@ def get_tables():
     """
 
     tables, total = Table.list()
-    return {'items': tables, 'total': total}
+    return {"items": tables, "total": total}
 
 
-@blp.route('/<int:table_id>', methods=['GET'])
+@blp.route("/<int:table_id>", methods=["GET"])
 @blp.response(200, TableSchema)
 def get_table_by_id(table_id: int):
     """
@@ -37,14 +37,14 @@ def get_table_by_id(table_id: int):
     """
     table = Table.find(table_id)
     if not table:
-        abort(404, message='Table not found')
+        abort(404, message="Table not found")
 
     return table
 
 
-@blp.route('/<int:table_id>/qr-code', methods=['GET'])
+@blp.route("/<int:table_id>/qr-code", methods=["GET"])
 @jwt_required()
-@blp.doc(security=[{'JWT': []}])
+@blp.doc(security=[{"JWT": []}])
 @blp.response(200)
 def get_qrcode(table_id: int):
     """
@@ -55,13 +55,15 @@ def get_qrcode(table_id: int):
     table = Table.find(table_id)
 
     if not table:
-        abort(404, message='Table not found')
+        abort(404, message="Table not found")
 
     qr_code = table.generate_qr_code()
 
     qr_code_bytes = io.BytesIO()
-    qr_code.save(qr_code_bytes, 'JPEG')
-    filename = 'table-number-' + str(table.table_number) + '.jpeg'
+    qr_code.save(qr_code_bytes, "JPEG")
+    filename = "table-number-" + str(table.table_number) + ".jpeg"
     qr_code_bytes.seek(0)
 
-    return send_file(qr_code_bytes, mimetype='image/jpeg', download_name=filename, as_attachment=True)
+    return send_file(
+        qr_code_bytes, mimetype="image/jpeg", download_name=filename, as_attachment=True
+    )

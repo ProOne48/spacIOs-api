@@ -21,15 +21,15 @@ class StatisticsSpaceUsageSchema(Schema):
     """
     Statistics Space Usage schema class
     """
+
     average_space_use = fields.Decimal()
     average_space_use_per_day = fields.List(fields.Nested(StatisticsUsageByDaySchema))
     total_space_use = fields.Integer()
 
 
 class StatisticsTableUsageSchema(Schema):
-
-    average_table_use = fields.Method('get_average_table_use')
-    total_table_use = fields.Method('get_total_table_use')
+    average_table_use = fields.Method("get_average_table_use")
+    total_table_use = fields.Method("get_total_table_use")
 
     @staticmethod
     def get_average_table_use(obj):
