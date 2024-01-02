@@ -106,8 +106,6 @@ class Space(RestItem):
         Free a table
         """
         table = Table.find(table_id)
-        print("----------------Table being free---------------------\n", table.occupied)
         table.occupied = False
         self.capacity -= table.n_chairs if self.capacity - table.n_chairs > 0 else 0
-        print("----------------Table free---------------------\n", table.occupied)
         self.update_table(table)
