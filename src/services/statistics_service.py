@@ -1,9 +1,15 @@
+from datetime import datetime
+
+from flask import request
 from flask_smorest import Blueprint, abort
 
 from base.settings import settings
-from src.models.statistics import StatisticsSpaceUsageSchema
-from src.models.statistics.statistics import Statistics
-from src.models.statistics.statistics_schema import StatisticsSchema
+from src.models.statistics import (
+    StatisticsSpaceUsageSchema,
+    StatisticsSchema,
+    StatisticsFormat,
+    Statistics,
+)
 
 api_url = settings.API_BASE_NAME + "/statistics"
 api_name = "Statistics"
@@ -33,7 +39,11 @@ def get_statistics_by_space(space_id: int):
     :param space_id: Space id
     :return: A list of statistics
     """
-    return Statistics.space_statistics(space_id)
+    time = request.args.get("time", datetime(2010, 1, 1).isoformat())
+    date = datetime.fromisoformat(time.replace("Z", "+01:00"))
+    statistics_format = request.args.get("format", StatisticsFormat.DAY.value)
+
+    return Statistics.space_statistics(space_id, date, statistics_format)
 
 
 @blp.route("", methods=["POST"])
