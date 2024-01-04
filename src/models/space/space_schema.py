@@ -32,7 +32,8 @@ class SpaceListSchema(Schema):
 class SpaceCreateSchema(Schema):
     id = fields.Integer(allow_none=True)
     name = fields.String(required=True)
-    description = fields.String()
+    duration = fields.Integer(allow_none=True)
+    description = fields.String(required=False)
 
 
 class SpacePDFSchema(Schema):

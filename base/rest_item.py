@@ -1,7 +1,7 @@
 from typing import TypeVar, TYPE_CHECKING, Type, Optional, List, Dict
 
 from sqlalchemy import select
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError, NoResultFound
 from sqlalchemy.orm import DeclarativeBase
 
 from base.db_manager import Session
@@ -49,7 +49,10 @@ class RestItem(BaseSQL):
         :param item_id: the item id
         :return: the item if found, None otherwise
         """
-        return cls.session.get(cls, item_id)
+        try:
+            return cls.session.get(cls, item_id)
+        except NoResultFound:
+            raise NoResultFound(f"{cls.__name__} with id {item_id} not found")
 
     @classmethod
     def find_by(

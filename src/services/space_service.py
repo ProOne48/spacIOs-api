@@ -88,7 +88,6 @@ def create_space(space_data):
     space = Space()
     space.add_from_dict(space_data)
     space.space_owner_id = context.get_user_id()
-    space.capacity = 0
     space.max_capacity = 0
     try:
         space.insert()
