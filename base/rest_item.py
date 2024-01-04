@@ -78,16 +78,22 @@ class RestItem(BaseSQL):
 
         return items, len(items)
 
-    def update(self: RestItemSubClass, data: Dict[str, any] = None):
+    def update(self: RestItemSubClass, data: Dict[str, any] = None, threading=False):
         """
         Updates the current object in the database. If `data` is not None then it will assign each value of data in its
         respective object property (only if the key exists in the data model).
         :param data: a dict with the keys to update and it's values
+        :param threading: if True will commit the session in a different thread
         :return:
         """
+
         if data:
             self.add_from_dict(data)
-        self.commit()
+
+        if threading:
+            self.commit_threaded()
+        else:
+            self.commit()
 
     def insert(self: RestItemSubClass):
         """
@@ -127,4 +133,20 @@ class RestItem(BaseSQL):
             raise e
         except SQLAlchemyError as e:
             self.session.rollback()
+            raise e
+
+    def commit_threaded(self: RestItemSubClass):
+        """
+        Commits the current session in a different thread
+        :return:
+        """
+        session = Session()
+        breakpoint()
+        try:
+            session.commit_threaded()
+        except IntegrityError as e:
+            session.rollback()
+            raise e
+        except SQLAlchemyError as e:
+            session.rollback()
             raise e

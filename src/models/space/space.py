@@ -27,9 +27,20 @@ class Space(RestItem):
     max_capacity: Mapped[int] = mapped_column()
     duration: Mapped[Optional[int]] = mapped_column()
     space_owner_id: Mapped[int] = mapped_column(ForeignKey("space_owner.id"))
-    capacity: Mapped[Optional[int]] = mapped_column()
     pdf_img: Mapped[Optional[bytes]] = mapped_column()
     tables: Mapped[Optional[List["Table"]]] = relationship()
+
+    @property
+    def capacity(self) -> int:
+        """
+        Return the current capacity of the space
+        """
+        capacity = 0
+        for table in self.tables:
+            if table.occupied:
+                capacity += table.n_chairs
+
+        return capacity
 
     def check_table_number(self, table_number: int) -> bool:
         """
@@ -88,11 +99,6 @@ class Space(RestItem):
                     )
 
                 table.occupied = True
-                self.capacity += (
-                    table.n_chairs
-                    if self.capacity + table.n_chairs < self.max_capacity
-                    else 0
-                )
                 self.update_table(table)
                 threading.Timer(
                     duration * settings.SECONDS_TO_MINUTES,
@@ -107,5 +113,4 @@ class Space(RestItem):
         """
         table = Table.find(table_id)
         table.occupied = False
-        self.capacity -= table.n_chairs if self.capacity - table.n_chairs > 0 else 0
         self.update_table(table)
