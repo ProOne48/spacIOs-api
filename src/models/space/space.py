@@ -101,7 +101,8 @@ class Space(RestItem):
                 table.occupied = True
                 self.update_table(table)
                 threading.Timer(
-                    duration * settings.SECONDS_TO_MINUTES,
+                    5,
+                    # duration * settings.SECONDS_TO_MINUTES,
                     self.table_free,
                     args=[table_id],
                 ).start()
