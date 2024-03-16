@@ -15,7 +15,7 @@ from src.models.space import (
     SpacePDFSchema,
     SpaceReducedSchema,
 )
-from src.models.tables import TableCreateSchema, Table
+from src.models.tables import TableCreateSchema, Table, TableAlreadyOccupiedError
 
 blp = Blueprint(
     name="Space",
@@ -88,7 +88,6 @@ def create_space(space_data):
     space = Space()
     space.add_from_dict(space_data)
     space.space_owner_id = context.get_user_id()
-    space.capacity = 0
     space.max_capacity = 0
     try:
         space.insert()
@@ -153,7 +152,27 @@ def edit_table(table_data, space_id: int, table_id: int):
     """
     space = Space.find(space_id)
     table = Table.find(table_id)
-    space.edit_table(table, table_data)
+    space.update_table(table)
+
+    return space
+
+
+@blp.route("/<int:space_id>/table/<int:table_id>/occupy", methods=["PUT"])
+@jwt_required()
+@blp.doc(security=[{"JWT": []}])
+@blp.response(200, SpaceSchema)
+def occupy_table(space_id, table_id):
+    """
+    Occupy a table from a space
+    :param space_id: Space id
+    :param table_id: Table id
+    :return: SpaceSchema
+    """
+    space = Space.find(space_id)
+    try:
+        space.occupy_table(table_id)
+    except TableAlreadyOccupiedError:
+        abort(400, message="Table already occupied")
 
     return space
 

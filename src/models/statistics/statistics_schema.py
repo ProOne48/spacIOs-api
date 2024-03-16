@@ -12,9 +12,10 @@ class StatisticsSchema(Schema):
 
 
 class StatisticsUsageByDaySchema(Schema):
-    day = fields.String()
-    average_space_use = fields.Decimal()
-    total_space_use = fields.Integer()
+    day = fields.String(allow_none=True)
+    average_space_use = fields.Decimal(required=True)
+    total_space_use = fields.Integer(required=True)
+    hour = fields.Integer(allow_none=True)
 
 
 class StatisticsSpaceUsageSchema(Schema):

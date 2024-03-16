@@ -6,7 +6,12 @@ from .table_schema import (
     TableInputType,
     TableQRSchema,
 )
-from .table_exceptions import TableNumberExistError, TableError, TableNotExist
+from .table_exceptions import (
+    TableNumberExistError,
+    TableError,
+    TableNotExist,
+    TableAlreadyOccupiedError,
+)
 
 __all__ = [
     "Table",
@@ -18,4 +23,5 @@ __all__ = [
     "TableNumberExistError",
     "TableError",
     "TableNotExist",
+    "TableAlreadyOccupiedError",
 ]

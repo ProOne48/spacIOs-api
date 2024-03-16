@@ -8,6 +8,7 @@ class SpaceSchema(Schema):
     id = fields.Integer(required=True)
     name = fields.String(required=True)
     description = fields.String(required=True)
+    duration = fields.Integer(allow_none=True)
     max_capacity = fields.Integer(required=True)
     space_owner_id = fields.Integer(required=True)
     tables = fields.List(fields.Nested(TableSchema))
@@ -31,7 +32,8 @@ class SpaceListSchema(Schema):
 class SpaceCreateSchema(Schema):
     id = fields.Integer(allow_none=True)
     name = fields.String(required=True)
-    description = fields.String()
+    duration = fields.Integer(allow_none=True)
+    description = fields.String(required=False)
 
 
 class SpacePDFSchema(Schema):
