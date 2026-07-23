@@ -4,7 +4,7 @@ from typing import Optional, List
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from base.rest_item import RestItem
+from base.rest_item import RestItem, RestItemSubClass
 from src.models.tables import (
     Table,
     TableInputType,
@@ -51,6 +51,15 @@ class Space(RestItem):
                 return True
         return False
 
+    def delete(self: RestItemSubClass):
+        """
+        Deletes the current object from the database
+        :return:
+        """
+        for table in self.tables:
+            table.delete()
+        super().delete()
+
     def add_table(self, table_data: TableInputType) -> None:
         """
         Add a table to the space
@@ -94,15 +103,12 @@ class Space(RestItem):
         for table in self.tables:
             if table.id == table_id:
                 if table.occupied:
-                    raise TableAlreadyOccupiedError(
-                        "Table already occupied", "TABLE_ALREADY_OCCUPIED"
-                    )
+                    raise TableAlreadyOccupiedError()
 
                 table.occupied = True
                 self.update_table(table)
                 threading.Timer(
-                    duration,
-                    # duration * settings.SECONDS_TO_MINUTES,
+                    duration * settings.SECONDS_TO_MINUTES,
                     self.table_free,
                     args=[table_id],
                 ).start()

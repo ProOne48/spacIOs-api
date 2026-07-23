@@ -37,15 +37,15 @@ def google_login(login_data):
     id_info = {}
 
     token = login_data.get("token")
+    # TODO: Add this bypass only in development mode, and remove it in production. Search `token ==/!=` usages.
     if token != "Aasdkjbauypesd23lkjadk*-%asdkjbasd":
         try:
             id_info = id_token.verify_oauth2_token(
                 token, requests.Request(), settings.GOOGLE_CLIENT_ID
             )
 
-        except GoogleAuthError:
+        except GoogleAuthError as e:
             abort(401)
-            return False
 
     if id_info.get("sub") or token == "Aasdkjbauypesd23lkjadk*-%asdkjbasd":
         email = login_data.get("email")
@@ -58,7 +58,11 @@ def google_login(login_data):
         response = jsonify({"token": token, "login_ok": True})
 
         set_access_cookies(
-            response, create_access_token(identity=space_owner.to_auth_data())
+            response,
+            create_access_token(
+                identity=str(space_owner.id),
+                additional_claims=space_owner.to_auth_data(),
+            ),
         )
 
         return response

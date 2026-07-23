@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.14-slim-bookworm
 LABEL authors="ProOne48"
 
 RUN apt-get update && \

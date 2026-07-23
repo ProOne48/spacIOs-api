@@ -83,7 +83,7 @@ class Statistics(RestItem):
             cls.session.query(func.sum(Statistics.n_people))
             .filter(Statistics.space_id == space_id, Statistics.start_date > from_date)
             .first()[0]
-        )
+        ) or 0
 
     @classmethod
     def average_space_use_by_day(

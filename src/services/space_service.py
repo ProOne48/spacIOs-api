@@ -33,6 +33,7 @@ def get_spaces():
     :return: A list of spaces
     """
     items, total = Space.list()
+    print(items, total)
     return {"items": items, "total": total}
 
 
@@ -215,7 +216,7 @@ def delete_space(space_id: int):
     try:
         space.delete()
     except Exception as e:
-        abort(400, message=e.message)
+        abort(400)
 
     return None
 
@@ -231,6 +232,9 @@ def get_pdf(space_id: int):
     space = Space.find(space_id)
     if not space:
         abort(404, message="Space not found")
+
+    if not space.pdf_img:
+        abort(404, message="Space has no PDF")
 
     if space.pdf_img:
         pdf_bytes = io.BytesIO(space.pdf_img)

@@ -54,6 +54,7 @@ def get_actual_user():
     :return: SpaceOwnerSchema
     """
     space_owner = SpaceOwner()
+    print("User ID from context:", context.get_user_id())  # Debugging line
     try:
         space_owner = SpaceOwner.find(context.get_user_id())
     except Exception as e:

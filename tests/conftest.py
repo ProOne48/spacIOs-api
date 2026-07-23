@@ -92,7 +92,10 @@ def app():
 @pytest.fixture()
 def cookie_jwt_auth_header(insert_space_owner):
     flask_app.config["JWT_COOKIE_CSRF_PROTECT"] = False
-    token = create_access_token(identity=insert_space_owner.to_auth_data())
+    token = create_access_token(
+        identity=str(insert_space_owner.id),
+        additional_claims=insert_space_owner.to_auth_data(),
+    )
     return flask_app.config.get("JWT_ACCESS_COOKIE_NAME"), token
 
 
