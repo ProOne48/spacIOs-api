@@ -7,14 +7,16 @@ RUN apt-get update && \
     mkdir -p /app
 
 WORKDIR /app
-COPY requirements-dev.txt /app/requirements.txt
+COPY requirements.txt /app
+COPY requirements-dev.txt /app
+
 
 RUN echo "export PYTHONPATH=$PYTHONPATH:/app" > /root/.bashrc
 
 RUN export PYTHONPATH=. && \
     python -m pip install --upgrade pip && \
     pip install "gunicorn==20.0.*" && \
-    pip install -r requirements.txt -U
+    pip install -r requirements-dev.txt -U
 
 COPY . ./
 
