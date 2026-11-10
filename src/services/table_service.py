@@ -42,6 +42,27 @@ def get_table_by_id(table_id: int):
     return table
 
 
+@blp.route("/<int:table_id>", methods=["PUT"])
+@jwt_required()
+@blp.doc(security=[{"JWT": []}])
+@blp.arguments(TableSchema)
+@blp.response(200, TableSchema)
+def update_table(table_data: TableSchema, table_id: int):
+    """
+    Update a table
+    :param table_data: TableSchema
+    :param table_id: Table id
+    :return: TableSchema
+    """
+    table = Table.find(table_id)
+    if not table:
+        abort(404, message="Table not found")
+
+    table.add_from_dict(table_data)
+    table.update()
+    return table
+
+
 @blp.route("/<int:table_id>/qr-code", methods=["GET"])
 @jwt_required()
 @blp.doc(security=[{"JWT": []}])

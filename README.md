@@ -42,6 +42,23 @@ docker-compose -f ./docker/db.docker-compose.yml --env-file ./docker/db-local.en
 - Customize the environment vars in the `.secrets.local.toml` file.
 - If you need to modify the db-local.env file be careful to change the `.secrets.local.toml` so the data match.
 
+### 5. Start the applicattion
+
+```shell
+python3 server.py --port=5000
+```
+
+Be careful if using a >2.* python package as you may use `python` alone, also you can change the port used changing the `port` variable
+
+## Tests
+
+In the project we are currently using pytest for testing.
+
+In order to run the ALL the test run:
+
+```sh
+ENV_FOR_DYNACOON=test python -m pytest ./tests
+```
 
 ## Alembic guide for database migrations
 

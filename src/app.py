@@ -34,11 +34,6 @@ if settings.ENABLE_CORS:
 
     CORS(app, supports_credentials=True, origins=settings.CORS_ORIGINS)
 
-if settings.DEBUG_SQL > 0:
-    from easy_profile import EasyProfileMiddleware
-
-    app.wsgi_app = EasyProfileMiddleware(app.wsgi_app)
-
 from src.services import (
     space_owner_service,
     space_service,
@@ -81,6 +76,11 @@ def creds(response):
 
 @jwt.user_lookup_loader
 def load_current_user(jwt_header: dict, jwt_payload: dict) -> "UserAuthSchema":
-    g.current_user = jwt_payload.get("sub")
+    current_user = {
+        "id": jwt_payload.get("sub"),
+        "name": jwt_payload.get("name"),
+        "email": jwt_payload.get("email"),
+    }
+    g.current_user = current_user
 
-    return jwt_payload.get("sub")
+    return current_user

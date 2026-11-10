@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.14-slim-bookworm
 LABEL authors="ProOne48"
 
 RUN apt-get update && \
@@ -8,13 +8,15 @@ RUN apt-get update && \
 
 WORKDIR /app
 COPY requirements.txt /app
+COPY requirements-dev.txt /app
+
 
 RUN echo "export PYTHONPATH=$PYTHONPATH:/app" > /root/.bashrc
 
 RUN export PYTHONPATH=. && \
     python -m pip install --upgrade pip && \
     pip install "gunicorn==20.0.*" && \
-    pip install -r requirements.txt -U
+    pip install -r requirements-dev.txt -U
 
 COPY . ./
 

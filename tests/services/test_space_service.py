@@ -7,7 +7,9 @@ class TestSpaceService(object):
     def test_list(self, insert_space_owner, insert_space, cookie_jwt_auth_header):
         url = flask.url_for("Space.get_spaces")
         self.client.set_cookie(
-            "localhost", cookie_jwt_auth_header[0], cookie_jwt_auth_header[1]
+            domain="localhost",
+            key=cookie_jwt_auth_header[0],
+            value=cookie_jwt_auth_header[1],
         )
         res = self.client.get(url)
 
@@ -18,9 +20,13 @@ class TestSpaceService(object):
     ):
         url = flask.url_for("Space.get_space_by_id", space_id=insert_space.id)
         self.client.set_cookie(
-            "localhost", cookie_jwt_auth_header[0], cookie_jwt_auth_header[1]
+            domain="localhost",
+            key=cookie_jwt_auth_header[0],
+            value=cookie_jwt_auth_header[1],
         )
         res = self.client.get(url)
+
+        print(res.json, insert_space.id, insert_space.name)
 
         assert res.json.get("id") == insert_space.id
         assert res.json.get("name") == insert_space.name
@@ -30,7 +36,9 @@ class TestSpaceService(object):
     ):
         url = flask.url_for("Space.delete_space", space_id=insert_space.id)
         self.client.set_cookie(
-            "localhost", cookie_jwt_auth_header[0], cookie_jwt_auth_header[1]
+            domain="localhost",
+            key=cookie_jwt_auth_header[0],
+            value=cookie_jwt_auth_header[1],
         )
         res = self.client.delete(url)
 

@@ -31,7 +31,7 @@ CONFIG_DIR = "configs"  # folder of configuration files
 settings_files = (
     glob(f"{CONFIG_DIR}/settings.*")
     + glob(f"{CONFIG_DIR}/*_config.*")
-    + glob(f"{CONFIG_DIR}/.secrets.*")
+    + glob(f"{CONFIG_DIR}/.secrets.local.toml")
 )
 
 settings = Dynaconf(

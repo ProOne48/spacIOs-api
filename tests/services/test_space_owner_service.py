@@ -9,7 +9,9 @@ class TestSpaceOwnerService(object):
     def test_list(self, insert_space_owner, cookie_jwt_auth_header):
         url = flask.url_for(f"{API_BLUEPRINT}.get_space_owners")
         self.client.set_cookie(
-            "localhost", cookie_jwt_auth_header[0], cookie_jwt_auth_header[1]
+            domain="localhost",
+            key=cookie_jwt_auth_header[0],
+            value=cookie_jwt_auth_header[1],
         )
         res = self.client.get(url)
 
@@ -21,7 +23,9 @@ class TestSpaceOwnerService(object):
             space_owner_id=insert_space_owner.id,
         )
         self.client.set_cookie(
-            "localhost", cookie_jwt_auth_header[0], cookie_jwt_auth_header[1]
+            domain="localhost",
+            key=cookie_jwt_auth_header[0],
+            value=cookie_jwt_auth_header[1],
         )
         res = self.client.get(url)
 
@@ -33,7 +37,9 @@ class TestSpaceOwnerService(object):
             f"{API_BLUEPRINT}.delete_space_owner", space_owner_id=insert_space_owner.id
         )
         self.client.set_cookie(
-            "localhost", cookie_jwt_auth_header[0], cookie_jwt_auth_header[1]
+            domain="localhost",
+            key=cookie_jwt_auth_header[0],
+            value=cookie_jwt_auth_header[1],
         )
         res = self.client.delete(url)
 
