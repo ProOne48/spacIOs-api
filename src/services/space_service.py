@@ -215,7 +215,7 @@ def delete_space(space_id: int):
         abort(404, message="Space not found")
     try:
         space.delete()
-    except Exception as e:
+    except Exception:
         abort(400)
 
     return None

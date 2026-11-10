@@ -12,6 +12,4 @@ class Context:
         return None
 
     def get_user_id(self) -> Optional[int]:
-        print("Getting user ID from context...")
-        print("Current user in context:", self.get_user())  # Debugging line
         return self.get_user().get("id")
